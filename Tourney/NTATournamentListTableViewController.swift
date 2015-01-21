@@ -93,8 +93,8 @@ class NTATournamentListTableViewController: UITableViewController {
             viewController.tournament = sender as PFObject
         }
         else if (segue.identifier == "tournamentSegue") {
-            var viewController = segue.destinationViewController as NTAKnockoutTableViewController
-            viewController.tournament = sender as PFObject
+            var pageViewController = segue.destinationViewController as NTAKnockoutPageViewController
+            pageViewController.tournament = sender as PFObject
         }
         else if (segue.identifier == "editSegue") {
             let navigationController = segue.destinationViewController as UINavigationController

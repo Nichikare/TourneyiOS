@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func getKnockoutMap(tournament: PFObject) -> [[String:Int]] {
         // TODO if knockout, also get correct map name:
-        if let path = NSBundle.mainBundle().pathForResource("knockout_single_8_2", ofType: "plist") {
+        if let path = NSBundle.mainBundle().pathForResource("knockout_single_8", ofType: "plist") {
             if let map = NSDictionary(contentsOfFile: path) {
                 if let matches = map["matches"] as? [[String:Int]] {
                     return matches
@@ -57,20 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // This should never be hit but here just incase.
         return []
     }
-    
-    // Helper function to load a Knockout plist map and return it in the correct casted format.
-//    func getKnockoutMapRounds(tournament: PFObject) -> [[[String:Int]]] {
-//        if tournament["type"] as NSString == "knockout" {
-//            // TODO determine the knockout map name here? or set it on create?
-//            let map = self.getKnockoutMap("knockout_single_8")
-//            if let rounds = map["rounds"] as? [[[String:Int]]] {
-//                return rounds
-//            }
-//        }
-//        
-//        // This should never be hit but here just incase.
-//        return []
-//    }
     
     // Returns a match from the tournament object. If not found, returns an empty dictionary.
     func getTournamentMatch(tournament: PFObject, mid: Int) -> [String:AnyObject] {
