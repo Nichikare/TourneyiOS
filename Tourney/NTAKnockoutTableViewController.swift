@@ -15,31 +15,23 @@ protocol NTAKnockoutTableViewControllerDelegate {
 class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableViewControllerDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    var pageViewController: NTAKnockoutPageViewController?
     var tournament = PFObject(className: "Tournament")
-    var pageIndex = 0
+    var pageIndex = 0    
     var matches = [[String:Int]]()
-    
-    @IBAction func showActionSheet(sender: AnyObject) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
-            self.performSegueWithIdentifier("editSegue", sender: self)
-        }
-        alertController.addAction(editAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.translucent = false
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     // Number of matches in this round.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // TODO use current pager ID
         return self.matches.count
     }
 
@@ -64,9 +56,10 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             cell.mid = mid
             
             let match = self.appDelegate.getTournamentMatch(self.tournament, mid: mid)
+            
             if let participants = match["participants"] as? NSArray {
-                let indexA = participants[0] as NSInteger
-                let indexB = participants[1] as NSInteger
+                let indexA = participants[0] as Int
+                let indexB = participants[1] as Int
                 
                 // TODO What if both -1? Can this happen?
                 if indexA == -1 {
@@ -74,6 +67,8 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
                 }
                 else {
                     cell.nameALabel.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexA)
+                    cell.nameALabel.font = UIFont.systemFontOfSize(16.0)
+                    cell.nameALabel.textColor = UIColor.blackColor()
                 }
                 
                 if indexB == -1 {
@@ -81,11 +76,64 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
                 }
                 else {
                     cell.nameBLabel.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexB)
+                    cell.nameBLabel.font = UIFont.systemFontOfSize(16.0)
+                    cell.nameBLabel.textColor = UIColor.blackColor()
+                }
+                
+                if let winner = match["winner"] as? Int {
+                    if winner == indexA {
+                        cell.nameALabel.font = UIFont.boldSystemFontOfSize(16.0)
+                        cell.nameALabel.textColor = UIColor.greenColor()
+                    }
+                    else if winner == indexB {
+                        cell.nameBLabel.font = UIFont.boldSystemFontOfSize(16.0)
+                        cell.nameBLabel.textColor = UIColor.greenColor()
+                    }
+                    
+                    cell.winnerAButton.hidden = true
+                    cell.winnerBButton.hidden = true
+
+                    if let scores = match["scores"] as? [[Int]] {
+                        if scores.count > 0 {
+                            var scoreA = 0;
+                            var scoreB = 0;
+                            for set in scores {
+                                if set[0] > set[1] {
+                                    // A wins
+                                    scoreA = scoreA + 1
+                                }
+                                else if set[1] > set[0] {
+                                    // B wins
+                                    scoreB = scoreB + 1
+                                }
+                            }
+                            cell.scoreALabel.text = String(scoreA)
+                            cell.scoreBLabel.text = String(scoreB)
+                            cell.scoreALabel.hidden = false
+                            cell.scoreBLabel.hidden = false
+                        }
+                    }
+                    // TODO show check icon
                 }
             }
         }
 
         return cell
+    }
+    
+    func refreshMatch(mid: Int) {
+        for (index, match) in enumerate(matches) {
+            if match["mid"] == mid {
+                self.tableView.reloadSections(NSIndexSet(index: index), withRowAnimation: .Automatic)
+                
+                // This is a little hack that causes our pageViewController to forget about other pages if there is a winnerMid.
+                if let winnerMid = match["winnerMid"] {
+                    self.pageViewController?.dataSource = nil
+                    self.pageViewController?.dataSource = self.pageViewController
+                }
+                return
+            }
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -98,6 +146,7 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             let tableViewController = segue.destinationViewController as NTAMatchTableViewController
             tableViewController.tournament = self.tournament
             tableViewController.mid = sender!.mid as Int
+            tableViewController.knockoutTableViewController = self
         }
         else if (segue.identifier == "matchWinnerSegue") {
             let tableViewController = segue.destinationViewController as NTAMatchTableViewController
@@ -106,11 +155,7 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             tableViewController.match = sender!["match"] as [String:AnyObject]
             tableViewController.winnerChanged = true
             tableViewController.saveBarButton.enabled = true
-        }
-        else if (segue.identifier == "editSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTAEditTournamentTableViewController
-            tableViewController.tournament = self.tournament
+            tableViewController.knockoutTableViewController = self            
         }
     }
     

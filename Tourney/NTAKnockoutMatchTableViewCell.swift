@@ -14,6 +14,8 @@ class NTAKnockoutMatchTableViewCell: UITableViewCell {
     @IBOutlet weak var nameBLabel: UILabel!
     @IBOutlet weak var winnerAButton: UIButton!
     @IBOutlet weak var winnerBButton: UIButton!
+    @IBOutlet weak var scoreALabel: UILabel!
+    @IBOutlet weak var scoreBLabel: UILabel!
     
     // For associating a match with this cell.
     var mid = 0

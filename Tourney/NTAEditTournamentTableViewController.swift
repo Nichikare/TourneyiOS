@@ -10,6 +10,7 @@ import UIKit
 
 class NTAEditTournamentTableViewController: UITableViewController {
     
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     var tournament = PFObject(className: "Tournament")
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -25,11 +26,17 @@ class NTAEditTournamentTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return ""
+        if (section == 1 && self.tournament["type"] as? NSString != "knockout") {
+            return ""
+        }
+        else {
+            return super.tableView(self.tableView, titleForFooterInSection: section)
+        }
+
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 1) {
+        if (section == 1 && self.tournament["type"] as? NSString != "knockout") {
             return 0
         }
         else {
@@ -48,7 +55,16 @@ class NTAEditTournamentTableViewController: UITableViewController {
                 alertController.message = "Are you sure? All tournament matches will be deleted."
                 
                 let destroyAction = UIAlertAction(title: "Reset Tournament", style: .Destructive) { (action) in
-                    println(action)
+                    // Reset tournament
+                    self.tournament["matches"] = [:]
+                    self.tournament["type"] = ""
+                    self.tournament.saveEventually()
+                    
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    let navigationController = self.appDelegate.initialViewController as UINavigationController
+                    navigationController.popToRootViewControllerAnimated(false)
+                    let viewController = navigationController.topViewController as NTATournamentListTableViewController
+                    viewController.performSegueWithIdentifier("participantSegue", sender: self.tournament)
                 }
                 alertController.addAction(destroyAction)
             }
@@ -67,6 +83,10 @@ class NTAEditTournamentTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "nameSegue") {
             let tableViewController = segue.destinationViewController as NTATNameTableViewController
+            tableViewController.tournament = self.tournament
+        }
+        else if (segue.identifier == "unwindToParticipants") {
+            let tableViewController = segue.destinationViewController as NTAParticipantsTableViewController
             tableViewController.tournament = self.tournament
         }
     }

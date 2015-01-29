@@ -15,29 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var initialViewController: UIViewController?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        // TODO make this async?
         Parse.enableLocalDatastore()
         Parse.setApplicationId("4zjfhYhbjTMD58b8IXsxjrEsR0xzyUsIIkJkzZ5r", clientKey: "1ZSLFOheFZwo2AjsbGngDGfBClkUOLfJvS6Nxx1b")
-        
-        PFUser.enableAutomaticUser()
-        
-        // Try to create a tournament with a user relation and save the tournament. Does user also get saved?
-        // We need to store a session token locally?
-        
-        //        var object = PFObject(className: "Tournament")
-        //        object.addObject("Banana", forKey: "title")
-        //        object.addObject("Chocolate", forKey: "favoriteIceCream")
-        //        object.saveEventually()
-        
-        // If a session token already exists?
-        //        PFUser.becomeInBackground("session-token-here", {
-        //            (user: PFUser!, error: NSError!) -> Void in
-        //            if error != nil {
-        //                // The token could not be validated.
-        //            } else {
-        //                // The current user is now set to user.
-        //            }
-        //        })
         
         self.initialViewController = self.window?.rootViewController
         
@@ -45,8 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getKnockoutMap(tournament: PFObject) -> [[String:Int]] {
-        // TODO if knockout, also get correct map name:
-        if let path = NSBundle.mainBundle().pathForResource("knockout_single_8", ofType: "plist") {
+        let participantCount = tournament["participants"].count as Int
+        let logParticipantCount = log(Double(participantCount))
+        let logMultiple = log(Double(2))
+        let size = pow(2, ceil(logParticipantCount/logMultiple));
+        let plist = "knockout_single_\(Int(size))"
+
+        if let path = NSBundle.mainBundle().pathForResource(plist, ofType: "plist") {
             if let map = NSDictionary(contentsOfFile: path) {
                 if let matches = map["matches"] as? [[String:Int]] {
                     return matches

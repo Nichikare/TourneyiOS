@@ -14,6 +14,20 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     var tournament = PFObject(className: "Tournament")
     var map = [[String:Int]]()
     var roundCount = 3
+    
+    @IBAction func showActionSheet(sender: AnyObject) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
+            self.performSegueWithIdentifier("editSegue", sender: self)
+        }
+        alertController.addAction(editAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +40,8 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
         let tableViewController = self.viewControllerAtIndex(0)
         let viewControllers: NSArray = [tableViewController]
         self.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+        
+        self.view.backgroundColor = UIColor.blueColor()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -40,6 +56,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
         
         let tableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("KnockoutTableViewController") as NTAKnockoutTableViewController
         
+        tableViewController.pageViewController = self
         tableViewController.tournament = self.tournament
         tableViewController.pageIndex = index
         
@@ -77,4 +94,11 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
         return 0
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "editSegue") {
+            let navigationController = segue.destinationViewController as UINavigationController
+            var tableViewController = navigationController.topViewController as NTAEditTournamentTableViewController
+            tableViewController.tournament = self.tournament
+        }
+    }
 }

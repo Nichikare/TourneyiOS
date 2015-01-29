@@ -78,6 +78,8 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
         let navigationController = self.appDelegate.initialViewController as UINavigationController
         navigationController.popToRootViewControllerAnimated(false)
+        let viewController = navigationController.topViewController as NTATournamentListTableViewController
+        viewController.performSegueWithIdentifier("tournamentSegue", sender: self.tournament)
     }
     
     override func viewWillAppear(animated: Bool) {

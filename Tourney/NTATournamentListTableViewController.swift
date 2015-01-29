@@ -26,7 +26,8 @@ class NTATournamentListTableViewController: UITableViewController {
         
         var query = PFQuery(className:"Tournament")
         query.orderByAscending("createdAt")
-        // TODO: Filter by current user
+        query.whereKey("createdBy", equalTo: PFUser.currentUser())
+        // TODO: Work offline too. query.fromLocalDatastore() if no connection?
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if (error == nil) {
@@ -74,7 +75,7 @@ class NTATournamentListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tournament = self.tournaments[indexPath.row] as PFObject
-        if (tournament["type"] == nil) {
+        if (tournament["type"] == nil || tournament["type"] as NSString == "") {
             self.performSegueWithIdentifier("participantSegue", sender: tournament)
         }
         else {

@@ -69,9 +69,9 @@
 			<integer>7</integer>
 			<key>winnerWeight</key>
 			<integer>0</integer>
-			<key>loser_mid</key>
+			<key>loserMid</key>
 			<integer>8</integer>
-			<key>loser_weight</key>
+			<key>loserWeight</key>
 			<integer>0</integer>
 		</dict>
 		<dict>
@@ -83,9 +83,9 @@
 			<integer>7</integer>
 			<key>winnerWeight</key>
 			<integer>1</integer>
-			<key>loser_mid</key>
+			<key>loserMid</key>
 			<integer>8</integer>
-			<key>loser_weight</key>
+			<key>loserWeight</key>
 			<integer>1</integer>
 		</dict>
 		<dict>

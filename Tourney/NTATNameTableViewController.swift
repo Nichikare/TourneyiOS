@@ -55,6 +55,10 @@ class NTATNameTableViewController: UITableViewController {
 
     func doneButtonAction() {
         var tournament = PFObject(className:"Tournament")
+        var acl = PFACL(user: PFUser.currentUser())
+        acl.setPublicReadAccess(true)
+        tournament.ACL = acl
+        tournament["createdBy"] = PFUser.currentUser()
         tournament["title"] = self.nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         tournament["participants"] = NSMutableArray()
         tournament.saveEventually()
