@@ -31,9 +31,10 @@ class NTATypeTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .None
-        self.selectedRow = indexPath
-        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .Checkmark
+        // TODO: Uncomment these when we release groups
+//        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .None
+//        self.selectedRow = indexPath
+//        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .Checkmark
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

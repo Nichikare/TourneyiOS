@@ -13,7 +13,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     var tournament = PFObject(className: "Tournament")
     var map = [[String:Int]]()
-    var roundCount = 3
+    var roundCount: Int = 0
     
     @IBAction func showActionSheet(sender: AnyObject) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -34,8 +34,8 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
         
         self.dataSource = self
         self.map = self.appDelegate.getKnockoutMap(self.tournament)
-        // TODO get the number of rounds automatically
-        // self.roundCount = self.appDelegate.getRoundCount(self.tournament)
+        let size = self.appDelegate.getKnockoutMapSize(self.tournament)
+        self.roundCount = Int(log(size)) + 1
         
         let tableViewController = self.viewControllerAtIndex(0)
         let viewControllers: NSArray = [tableViewController]

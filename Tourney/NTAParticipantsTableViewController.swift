@@ -141,7 +141,9 @@ class NTAParticipantsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        self.tournament["participants"].exchangeObjectAtIndex(destinationIndexPath.row, withObjectAtIndex: sourceIndexPath.row)
+        let participant = self.tournament["participants"].objectAtIndex(sourceIndexPath.row) as [String:AnyObject]
+        self.tournament["participants"].removeObjectAtIndex(sourceIndexPath.row)
+        self.tournament["participants"].insertObject(participant, atIndex: destinationIndexPath.row)
         self.tableView.reloadData()
         self.tournament.saveEventually()
     }

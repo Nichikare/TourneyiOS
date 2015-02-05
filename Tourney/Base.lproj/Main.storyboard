@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="5DX-O1-DF8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="5DX-O1-DF8">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -14,7 +14,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Select tournament type" id="oTd-nW-kiL">
+                            <tableViewSection headerTitle="Select tournament type" footerTitle="Groups are currently unavailable. (Coming soon)" id="oTd-nW-kiL">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="LrZ-93-Qux" style="IBUITableViewCellStyleDefault" id="HM5-6a-GGQ">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -38,7 +38,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Groups" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DMZ-6t-9RW">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -52,7 +52,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Groups followed by a Knockout playoff" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QvC-Jc-kid">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -96,7 +96,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Format" footerTitle="Double Elimination knockout tournaments have an additional bracket for losers." id="DfU-2f-DfX">
+                            <tableViewSection headerTitle="Format" footerTitle="Double Elimination knockout tournaments have an additional bracket for losers. (Coming soon)" id="DfU-2f-DfX">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="kzY-Rc-zat" style="IBUITableViewCellStyleDefault" id="gk5-sM-fGj">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -120,7 +120,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Double Elimination" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VC9-tv-yGD">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -291,7 +291,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEm-OI-4nP" id="AUZ-cH-kT2">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Winner" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tj8-pn-quc">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Winner" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="Tj8-pn-quc">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -314,7 +314,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oGy-Re-elZ" id="qKi-H6-v6D">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Scores" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ich-q7-9Nx">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Scores" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="Ich-q7-9Nx">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -356,23 +356,39 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="219" id="vkJ-Re-WGG">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="219" id="vkJ-Re-WGG">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vkJ-Re-WGG" id="gYA-nF-ckN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-9x-0BR">
-                                                    <rect key="frame" x="0.0" y="17" width="600" height="162"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="180"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="180" id="FkM-R4-oMp"/>
+                                                    </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="444077533.95052099">
                                                         <!--2015-01-27 18:52:13 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="dateChanged:" destination="UxK-q9-zfo" eventType="valueChanged" id="b9A-s9-gyu"/>
+                                                    </connections>
                                                 </datePicker>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qdg-Be-uOG">
+                                                    <rect key="frame" x="282" y="180" width="37" height="30"/>
+                                                    <state key="normal" title="Clear">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clearDate:" destination="UxK-q9-zfo" eventType="touchUpInside" id="Uq9-5r-TTN"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="top" secondItem="4Kb-9x-0BR" secondAttribute="top" constant="-17" id="98R-jd-JJk"/>
-                                                <constraint firstAttribute="bottom" secondItem="4Kb-9x-0BR" secondAttribute="bottom" constant="39" id="nwc-W9-yXe"/>
-                                                <constraint firstAttribute="leading" secondItem="4Kb-9x-0BR" secondAttribute="leading" id="vsz-9P-FdT"/>
-                                                <constraint firstAttribute="trailing" secondItem="4Kb-9x-0BR" secondAttribute="trailing" id="z2R-rv-LZB"/>
+                                                <constraint firstAttribute="centerX" secondItem="Qdg-Be-uOG" secondAttribute="centerX" id="5XQ-hP-c2v"/>
+                                                <constraint firstItem="4Kb-9x-0BR" firstAttribute="top" secondItem="gYA-nF-ckN" secondAttribute="top" id="gZd-q8-MRa"/>
+                                                <constraint firstItem="Qdg-Be-uOG" firstAttribute="bottom" secondItem="gYA-nF-ckN" secondAttribute="bottomMargin" id="k4B-bx-Xh8"/>
+                                                <constraint firstItem="4Kb-9x-0BR" firstAttribute="leading" secondItem="gYA-nF-ckN" secondAttribute="leading" id="kRY-kj-GPZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="4Kb-9x-0BR" secondAttribute="trailing" id="p7o-RY-oK4"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -414,6 +430,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="clearDateButton" destination="Qdg-Be-uOG" id="moN-Kh-grF"/>
+                        <outlet property="dateCell" destination="FM0-so-VsP" id="jmS-Aa-Y0z"/>
                         <outlet property="datePickerCell" destination="vkJ-Re-WGG" id="Gvl-L6-Xa5"/>
                         <outlet property="notesTextView" destination="qDl-0i-Czl" id="4T3-8e-YSr"/>
                         <outlet property="saveBarButton" destination="IJb-Y8-2xm" id="V8F-SO-b6p"/>
@@ -423,7 +441,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9n-sB-7J2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3272" y="1122"/>
+            <point key="canvasLocation" x="3272" y="1109"/>
         </scene>
         <!--Winner-->
         <scene sceneID="2at-dn-PSo">
@@ -466,6 +484,24 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="3ea-oA-wIj">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="e6N-vF-yeq" style="IBUITableViewCellStyleDefault" id="ngF-W6-6aI">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ngF-W6-6aI" id="dZo-Pv-fhx">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Reset" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="e6N-vF-yeq">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="Lmy-rA-jnY" id="C6L-YU-3yv"/>
@@ -498,7 +534,6 @@
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lNZ-H0-wC2">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.5568627451" green="0.55294117649999996" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ijo-xt-FHj">
@@ -856,7 +891,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.5568627451" green="0.55294117649999996" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.17254901959999999" green="0.56862745100000001" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="kMf-kb-qL8" secondAttribute="centerY" id="15n-gW-pDm"/>
                             <constraint firstAttribute="centerX" secondItem="kMf-kb-qL8" secondAttribute="centerX" constant="-0.5" id="N6N-vL-F8k"/>

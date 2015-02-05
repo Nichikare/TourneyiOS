@@ -9,7 +9,9 @@
 import UIKit
 
 protocol NTAMatchTableViewControllerDelegate {
+    func getValue(key: String) -> AnyObject
     func updateValue(key: String, toValue: AnyObject)
+    func resetWinner()
 }
 
 class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewControllerDelegate, UITextViewDelegate {
@@ -28,9 +30,11 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     
     @IBOutlet weak var winnerTableCell: UITableViewCell!
     @IBOutlet weak var scoresTableCell: UITableViewCell!
+    @IBOutlet weak var dateCell: UITableViewCell!
     @IBOutlet weak var datePickerCell: UITableViewCell!
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     @IBOutlet weak var notesTextView: UITextView!
+    @IBOutlet weak var clearDateButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +43,11 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         // This allows us to pass in altered match objects
         if self.match.isEmpty {
             self.match = self.appDelegate.getTournamentMatch(self.tournament, mid: self.mid)
+        }
+        
+        // Set initial date
+        if (self.match["date"] != nil) {
+            self.updateDateCellDetailText(self.match["date"] as NSDate)
         }
         
         // Remove notes text view padding.
@@ -61,13 +70,24 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let participants = self.match["participants"] as? NSArray {
+        // Set elements to default states.
+        self.winnerTableCell.detailTextLabel?.text = "None"
+        self.scoresTableCell.detailTextLabel?.text = "None"
+        self.scoresTableCell.textLabel?.enabled = false
+        
+        if let participants = self.match["participants"] as? [Int] {
+            if participants[0] > -1 && participants[1] > -1 {
+                self.winnerTableCell.textLabel?.enabled = true
+            }
+            
             if let winnerIndex = self.match["winner"] as? Int {
                 let winnerName = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: winnerIndex)
                 self.winnerTableCell.detailTextLabel?.text = winnerName
+                self.winnerTableCell.textLabel?.enabled = true
+                self.scoresTableCell.textLabel?.enabled = true
             }
         }
-        
+    
         if let scores = self.match["scores"] as? [[Int]] {
             if scores.count > 0 {
                 var scoreStrings: [String] = []
@@ -104,19 +124,19 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
                 let winnerIndex = self.match["winner"] as Int
                 let loserIndex = winnerIndex == participants[0] ? participants[1] : participants[0]
                 
-                let filteredMatch = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["mid"] == self.mid})[0] as [String:Int]
+                let matchInfo = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["mid"] == self.mid})[0] as [String:Int]
                 
                 // Advance winner.
-                if let winnerMid = filteredMatch["winnerMid"] {
-                    if let winnerWeight = filteredMatch["winnerWeight"] {
-                        self.advanceParticipant(winnerIndex, nextMid: winnerMid, nextWeight: winnerWeight)
+                if let winnerMid = matchInfo["winnerMid"] {
+                    if let winnerWeight = matchInfo["winnerWeight"] {
+                        self.appDelegate.advanceKnockoutParticipant(self.tournament, participantIndex: winnerIndex, nextMid: winnerMid, nextWeight: winnerWeight)
                     }
                 }
                 
                 // Advance loser.
-                if let loserMid = filteredMatch["loserMid"] {
-                    if let loserWeight = filteredMatch["loserWeight"] {
-                        self.advanceParticipant(loserIndex, nextMid: loserMid, nextWeight: loserWeight)
+                if let loserMid = matchInfo["loserMid"] {
+                    if let loserWeight = matchInfo["loserWeight"] {
+                        self.appDelegate.advanceKnockoutParticipant(self.tournament, participantIndex: loserIndex, nextMid: loserMid, nextWeight: loserWeight)
                     }
                 }
             }
@@ -125,6 +145,33 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         self.tournament.saveEventually()
         self.navigationController?.popViewControllerAnimated(true)        
         self.knockoutTableViewController?.refreshMatch(self.mid)
+    }
+    
+    @IBAction func clearDate(sender: AnyObject) {
+        tableView.beginUpdates()
+        self.editingDate = false
+        self.match["date"] = nil
+        self.dateCell.detailTextLabel?.text = "None"
+        self.dateCell.detailTextLabel?.textColor = UIColor.grayColor()
+        self.clearDateButton.hidden = true
+        self.saveBarButton.enabled = true
+        tableView.endUpdates()
+    }
+    
+    @IBAction func dateChanged(sender: UIDatePicker) {
+        self.match["date"] = sender.date
+        self.updateDateCellDetailText(sender.date)
+        self.saveBarButton.enabled = true
+    }
+    
+    func updateDateCellDetailText(date: NSDate) {
+        var formatString = NSDateFormatter.dateFormatFromTemplate("EdMMM jj:mm", options: 0, locale: NSLocale.currentLocale())
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = formatString
+        
+        self.dateCell.detailTextLabel?.text = dateFormatter.stringFromDate(date)
+        self.dateCell.detailTextLabel?.textColor = UIColor.blackColor()
+        self.clearDateButton.hidden = false
     }
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
@@ -153,35 +200,59 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (indexPath.section == 1 && indexPath.row == 1) { // Picker cell
-            if self.editingDate {
-                return 219
-            }
-            else {
+            if !self.editingDate {
                 return 0
             }
         }
-        else {
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
-        }
+
+        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.section != 1 || indexPath.row != 2) {
+            self.notesTextView.resignFirstResponder()
+        }
+        
         if (indexPath.section == 1 && indexPath.row == 0) { // Date cell
+            tableView.beginUpdates()
             self.editingDate = !self.editingDate
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .Fade)
+            tableView.endUpdates()
         }
     }
     
-    // Helper function to advance a participant to a given match and weight.
-    func advanceParticipant(participantIndex: Int, nextMid: Int, nextWeight: Int) {
-        var nextMatch = self.appDelegate.getTournamentMatch(self.tournament, mid: nextMid)
-        if nextMatch.isEmpty {
-            nextMatch["participants"] = [0, 0]
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "winnerSegue" {
+            self.tableView.deselectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: true)
+            
+            if let participants = self.match["participants"] as? [Int] {
+                // Only allow a winner to be set when both participants are available.
+                if participants[0] == -1 || participants[1] == -1 {
+                    let winnerAlertController = UIAlertController(title: nil, message: "There must be 2 match participants before you can set a winner.", preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    winnerAlertController.addAction(OKAction)
+                    self.presentViewController(winnerAlertController, animated: true, completion: nil)
+                    return false
+                }
+            }
         }
-        var participants = nextMatch["participants"] as [Int]
-        participants[nextWeight] = participantIndex
-        nextMatch["participants"] = participants
-        self.appDelegate.updateTournamentMatch(self.tournament, mid: nextMid, match: nextMatch)
+        else if identifier == "scoresSegue" {
+            self.tableView.deselectRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0), animated: true)
+            
+            if let winnerIndex = self.match["winner"] as? Int {
+                // Allow score entry when there are no BYEs.
+                if let participants = self.match["participants"] as? [Int] {
+                    return participants[0] != -2 && participants[1] != -2
+                }
+            }
+
+            let scoreAlertController = UIAlertController(title: nil, message: "A winner must be set before you can enter scores.", preferredStyle: .Alert)
+            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            scoreAlertController.addAction(OKAction)
+            self.presentViewController(scoreAlertController, animated: true, completion: nil)
+            return false
+        }
+        
+        return true
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -189,6 +260,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
             let tableViewController = segue.destinationViewController as NTAMatchWinnerTableViewController
             tableViewController.tournament = self.tournament
             tableViewController.match = self.match
+            tableViewController.mid = self.mid
             tableViewController.delegate = self
         }
         else if (segue.identifier == "scoresSegue") {
@@ -197,6 +269,16 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
             tableViewController.match = self.match
             tableViewController.delegate = self
         }
+    }
+    
+    // Delegate function to get the original match data.
+    func getValue(key: String) -> AnyObject {
+        var originalMatch = self.appDelegate.getTournamentMatch(self.tournament, mid: self.mid)
+        if let value: AnyObject = originalMatch[key] {
+            return value
+        }
+        
+        return NSNull()
     }
     
     // Delegate function to update local match data.
@@ -208,5 +290,28 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         }
         
         self.saveBarButton.enabled = true
+    }
+    
+    // Delegate function to delete the current and subsequent match winners.
+    func resetWinner() {
+        self.match.removeValueForKey("winner")
+        self.match.removeValueForKey("scores")
+        self.appDelegate.updateTournamentMatch(self.tournament, mid: self.mid, match: self.match)
+        self.knockoutTableViewController?.refreshMatch(self.mid)
+        
+        // Reset any next matches.
+        let matchInfo = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["mid"] == self.mid})[0] as [String:Int]
+        if let winnerMid = matchInfo["winnerMid"] {
+            if let winnerWeight = matchInfo["winnerWeight"] {
+                self.appDelegate.advanceKnockoutParticipant(self.tournament, participantIndex: -1, nextMid: winnerMid, nextWeight: winnerWeight)
+            }
+        }
+        if let loserMid = matchInfo["loserMid"] {
+            if let loserWeight = matchInfo["loserWeight"] {
+                self.appDelegate.advanceKnockoutParticipant(self.tournament, participantIndex: -1, nextMid: loserMid, nextWeight: loserWeight)
+            }
+        }
+        
+        self.tournament.saveEventually()
     }
 }

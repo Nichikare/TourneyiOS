@@ -44,35 +44,59 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         
         let extraMatchSwitch = self.extraMatchCell.accessoryView as UISwitch
         self.tournament["bronzeMatch"] = extraMatchSwitch.on
-        self.tournament.saveEventually()
         
-        let matches = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["round"] == 1})
-        var firstRoundMatches: [String:[String:AnyObject]] = [:]
-        // TODO use correct pager id
-        for match in matches {
-            if let mid = match["mid"] {
-                var participants: NSMutableArray = []
+        // Store byes to advance.
+        var byes: [[String:Int]] = []
+        
+        // Grab the first round match info to determine seeding.
+        var firstRoundMatches = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["round"] == 1})
+        
+        // Loop through match info and apply seeds to tournament.
+        var matches: [String:[String:AnyObject]] = [:]
+        for matchInfo in firstRoundMatches {
+            if let mid = matchInfo["mid"] {
+                var participants: [Int] = [-1, -1]
                 
-                let indexA = match["indexA"]! as NSInteger
+                let indexA = matchInfo["indexA"]! as Int
+                let indexB = matchInfo["indexB"]! as Int
+                
                 if self.tournament["participants"].count > indexA {
                     participants[0] = indexA
                 }
                 else {
-                    participants[0] = -1
+                    participants[0] = -2
                 }
                 
-                let indexB = match["indexB"]! as NSInteger
                 if self.tournament["participants"].count > indexB {
                     participants[1] = indexB
                 }
                 else {
-                    participants[1] = -1
+                    participants[1] = -2
                 }
-
-                firstRoundMatches[String(mid)] = ["participants": participants]
+                
+                matches[String(mid)] = ["participants": participants]
+                
+                // Auto-advance BYEs.
+                if participants[0] == -2 {
+                    matches[String(mid)]?.updateValue(indexB, forKey: "winner")
+                    byes.append(["index": participants[1], "mid": matchInfo["winnerMid"]! as Int, "weight": matchInfo["winnerWeight"]! as Int])
+                }
+                else if participants[1] == -2 {
+                    matches[String(mid)]?.updateValue(indexA, forKey: "winner")
+                    byes.append(["index": participants[0], "mid": matchInfo["winnerMid"]! as Int, "weight": matchInfo["winnerWeight"]! as Int])
+                }
             }
         }
-        self.tournament["matches"] = firstRoundMatches
+        
+        // Save match records.
+        self.tournament.setObject(matches, forKey: "matches")
+        
+        // TODO: Make another pass at round 2 matches to check for more auto-advance BYEs. (DE)
+        // Advance participants for BYEs.
+        for bye in byes {
+            self.appDelegate.advanceKnockoutParticipant(self.tournament, participantIndex: bye["index"]!, nextMid: bye["mid"]!, nextWeight: bye["weight"]!)
+        }
+
         self.tournament.saveEventually()
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
@@ -98,9 +122,10 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch (indexPath.section) {
         case 0:
-            tableView.cellForRowAtIndexPath(selectedFormatRow)?.accessoryType = .None
-            selectedFormatRow = indexPath
-            tableView.cellForRowAtIndexPath(selectedFormatRow)?.accessoryType = .Checkmark
+            // TODO: Uncomment when we release double elimination.
+//            tableView.cellForRowAtIndexPath(selectedFormatRow)?.accessoryType = .None
+//            selectedFormatRow = indexPath
+//            tableView.cellForRowAtIndexPath(selectedFormatRow)?.accessoryType = .Checkmark
             break
             
         default:

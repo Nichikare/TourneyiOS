@@ -24,11 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func getKnockoutMap(tournament: PFObject) -> [[String:Int]] {
+    func getKnockoutMapSize(tournament: PFObject) -> Double {
         let participantCount = tournament["participants"].count as Int
         let logParticipantCount = log(Double(participantCount))
         let logMultiple = log(Double(2))
-        let size = pow(2, ceil(logParticipantCount/logMultiple));
+        let size = pow(2, ceil(logParticipantCount/logMultiple))
+        return size
+    }
+    
+    func getKnockoutMap(tournament: PFObject) -> [[String:Int]] {
+        let size = self.getKnockoutMapSize(tournament)
         let plist = "knockout_single_\(Int(size))"
 
         if let path = NSBundle.mainBundle().pathForResource(plist, ofType: "plist") {
@@ -43,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return []
     }
     
+    // Helper function to advance a participant to a given match and weight.
+    func advanceKnockoutParticipant(tournament: PFObject, participantIndex: Int, nextMid: Int, nextWeight: Int) {
+        var nextMatch = self.getTournamentMatch(tournament, mid: nextMid)
+        if nextMatch.isEmpty {
+            nextMatch["participants"] = [-1, -1]
+        }
+        var participants = nextMatch["participants"] as [Int]
+        participants[nextWeight] = participantIndex
+        nextMatch["participants"] = participants
+        self.updateTournamentMatch(tournament, mid: nextMid, match: nextMatch)
+    }
+    
     // Returns a match from the tournament object. If not found, returns an empty dictionary.
     func getTournamentMatch(tournament: PFObject, mid: Int) -> [String:AnyObject] {
         if let match = tournament["matches"].objectForKey(String(mid)) as? [String:AnyObject] {
@@ -54,7 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Replace a match element in the tournament object
     func updateTournamentMatch(tournament: PFObject, mid: Int, match: [String:AnyObject]) {
-        tournament["matches"].setValue(match, forKey: String(mid))
+        var matches = tournament["matches"] as [String:[String:AnyObject]]
+        matches.updateValue(match, forKey: String(mid))
+        tournament.setObject(matches, forKey: "matches")
     }
     
     // Returns a participants name as a string given their seed index.

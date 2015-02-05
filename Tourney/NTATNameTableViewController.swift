@@ -10,6 +10,8 @@ import UIKit
 
 class NTATNameTableViewController: UITableViewController {
     
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    
     @IBOutlet weak var nameTextField: UITextField!
     
     @IBAction func nameTextFieldChanged(sender: AnyObject) {
@@ -63,14 +65,11 @@ class NTATNameTableViewController: UITableViewController {
         tournament["participants"] = NSMutableArray()
         tournament.saveEventually()
         
-        let listNavigationController = self.navigationController?.presentingViewController as UINavigationController
-        var tableViewController = listNavigationController.viewControllers[0] as NTATournamentListTableViewController
-        
-        tableViewController.tournaments.insert(tournament, atIndex: 0)
-        tableViewController.tableView.reloadData()
-        // TODO segue to new tournament?
-
-        performSegueWithIdentifier("unwindToList", sender: self)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        let navigationController = self.appDelegate.initialViewController as UINavigationController
+        let viewController = navigationController.topViewController as NTATournamentListTableViewController
+        viewController.tournaments.insert(tournament, atIndex: 0)
+        viewController.performSegueWithIdentifier("participantSegue", sender: tournament)
     }
     
     func cancelButtonAction() {

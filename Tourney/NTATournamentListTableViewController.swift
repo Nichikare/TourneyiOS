@@ -64,10 +64,22 @@ class NTATournamentListTableViewController: UITableViewController {
         })
         
         var deleteRowAction = UITableViewRowAction(style: .Default, title: "Delete", handler:{action, index in
-            let tournament = self.tournaments[index.row] as PFObject
-            tournament.deleteEventually()
-            self.tournaments.removeAtIndex(index.row)
-            self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: .Automatic)
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let destroyAction = UIAlertAction(title: "Delete Tournament", style: .Destructive) { (action) in
+                let tournament = self.tournaments[index.row] as PFObject
+                tournament.deleteEventually()
+                self.tournaments.removeAtIndex(index.row)
+                self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: .Automatic)
+            }
+            alertController.addAction(destroyAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                self.tableView.editing = false
+                self.tableView.cellForRowAtIndexPath(index)?.editing = false
+            }
+            alertController.addAction(cancelAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
         })
         
         return [deleteRowAction, editRowAction]

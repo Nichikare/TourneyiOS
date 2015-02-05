@@ -66,7 +66,6 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
         
         if (indexPath.section == 0) {
             cell.textLabel?.text = "\(String(self.setCount)) sets"
-            cell.textLabel?.textColor = UIColor.blackColor()
             cell.cellTextField.hidden = true
             var setStepper = UIStepper(frame: CGRectZero)
             setStepper.minimumValue = 0
