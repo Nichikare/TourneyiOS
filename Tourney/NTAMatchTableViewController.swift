@@ -35,6 +35,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var clearDateButton: UIButton!
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,11 +60,16 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
             self.notesTextView.text = notes
             if (self.notesTextView.text == "") {
                 self.notesTextView.text = "Notes"
-                self.notesTextView.textColor = UIColor.lightGrayColor()
+                self.notesTextView.textColor = UIColor.appLightColor()
             }
             else {
-                self.notesTextView.textColor = UIColor.blackColor()
+                self.notesTextView.textColor = UIColor.whiteColor()
             }
+        }
+        
+        let barButtonItemFont = UIFont(name: "AvenirNext-DemiBold", size: 16)
+        if let font = barButtonItemFont {
+            self.saveBarButton.setTitleTextAttributes([NSFontAttributeName : font], forState: UIControlState.Normal)
         }
     }
     
@@ -72,7 +78,9 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         
         // Set elements to default states.
         self.winnerTableCell.detailTextLabel?.text = "None"
+        self.winnerTableCell.detailTextLabel?.textColor = UIColor.appLightColor()
         self.scoresTableCell.detailTextLabel?.text = "None"
+        self.scoresTableCell.detailTextLabel?.textColor = UIColor.appLightColor()
         self.scoresTableCell.textLabel?.enabled = false
         
         if let participants = self.match["participants"] as? [Int] {
@@ -80,9 +88,17 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
                 self.winnerTableCell.textLabel?.enabled = true
             }
             
+            if participants[0] == -2 || participants[1] == -2 {
+                self.winnerTableCell.textLabel?.enabled = true
+                self.scoresTableCell.textLabel?.enabled = true
+                self.winnerTableCell.accessoryType = UITableViewCellAccessoryType.None
+                self.scoresTableCell.accessoryType = UITableViewCellAccessoryType.None
+            }
+            
             if let winnerIndex = self.match["winner"] as? Int {
                 let winnerName = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: winnerIndex)
                 self.winnerTableCell.detailTextLabel?.text = winnerName
+                self.winnerTableCell.detailTextLabel?.textColor = UIColor.whiteColor()
                 self.winnerTableCell.textLabel?.enabled = true
                 self.scoresTableCell.textLabel?.enabled = true
             }
@@ -95,6 +111,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
                     scoreStrings.append("\(String(set[0]))-\(String(set[1]))")
                 }
                 self.scoresTableCell.detailTextLabel?.text = ", ".join(scoreStrings)
+                self.scoresTableCell.detailTextLabel?.textColor = UIColor.whiteColor()
             }
         }
     }
@@ -152,7 +169,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         self.editingDate = false
         self.match["date"] = nil
         self.dateCell.detailTextLabel?.text = "None"
-        self.dateCell.detailTextLabel?.textColor = UIColor.grayColor()
+        self.dateCell.detailTextLabel?.textColor = UIColor.appLightColor()
         self.clearDateButton.hidden = true
         self.saveBarButton.enabled = true
         tableView.endUpdates()
@@ -164,18 +181,23 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         self.saveBarButton.enabled = true
     }
     
+    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let string = "myString"
+        return NSAttributedString(string: "", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+    }
+    
     func updateDateCellDetailText(date: NSDate) {
         var formatString = NSDateFormatter.dateFormatFromTemplate("EdMMM jj:mm", options: 0, locale: NSLocale.currentLocale())
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = formatString
         
         self.dateCell.detailTextLabel?.text = dateFormatter.stringFromDate(date)
-        self.dateCell.detailTextLabel?.textColor = UIColor.blackColor()
+        self.dateCell.detailTextLabel?.textColor = UIColor.whiteColor()
         self.clearDateButton.hidden = false
     }
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        textView.textColor = UIColor.blackColor()
+        textView.textColor = UIColor.whiteColor()
         if (textView.text == "Notes") {
             textView.text = ""
         }
@@ -188,7 +210,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     func textViewDidEndEditing(textView: UITextView) {
         if (textView.text == "") {
             textView.text = "Notes"
-            textView.textColor = UIColor.lightGrayColor()
+            textView.textColor = UIColor.appLightColor()
         }
         
         if let notes = self.match["notes"] as? NSString {
@@ -231,6 +253,9 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
                     let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
                     winnerAlertController.addAction(OKAction)
                     self.presentViewController(winnerAlertController, animated: true, completion: nil)
+                    return false
+                }
+                else if participants[0] == -2 || participants[1] == -2 {
                     return false
                 }
             }

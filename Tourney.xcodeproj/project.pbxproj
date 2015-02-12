@@ -32,8 +32,8 @@
 		430B7DB71A7FD0BD001E9258 /* knockout_single_128.plist in Resources */ = {isa = PBXBuildFile; fileRef = 430B7DA71A7FD0BD001E9258 /* knockout_single_128.plist */; };
 		430B7DB81A7FD0BD001E9258 /* knockout_single_256.plist in Resources */ = {isa = PBXBuildFile; fileRef = 430B7DA81A7FD0BD001E9258 /* knockout_single_256.plist */; };
 		430B7DB91A7FD0BD001E9258 /* knockout_single_512.plist in Resources */ = {isa = PBXBuildFile; fileRef = 430B7DA91A7FD0BD001E9258 /* knockout_single_512.plist */; };
+		430D10F41A84ED9A00421FAA /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430D10F31A84ED9A00421FAA /* libstdc++.6.dylib */; };
 		431E3BC71A751519003DCC8A /* NTAScoresTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E3BC61A751519003DCC8A /* NTAScoresTableViewController.swift */; };
-		431E3BC91A753E0C003DCC8A /* NTAScoresTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E3BC81A753E0C003DCC8A /* NTAScoresTableViewCell.swift */; };
 		4334B1791A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334B1781A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift */; };
 		4334B17B1A69D1CF0070AB66 /* NTAMatchWinnerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334B17A1A69D1CF0070AB66 /* NTAMatchWinnerTableViewController.swift */; };
 		4368E64C1A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368E6461A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift */; };
@@ -43,17 +43,16 @@
 		4368E6511A69303300D67F46 /* NTATypeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368E64B1A69303300D67F46 /* NTATypeTableViewController.swift */; };
 		4368E6541A69304000D67F46 /* NTAEditTournamentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368E6521A69304000D67F46 /* NTAEditTournamentTableViewController.swift */; };
 		4368E6551A69304000D67F46 /* NTATNameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368E6531A69304000D67F46 /* NTATNameTableViewController.swift */; };
+		4381EE5F1A8976AB0077D1CB /* NTAAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4381EE5E1A8976AB0077D1CB /* NTAAboutViewController.swift */; };
 		439966261A695435003F51FD /* NTAMatchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439966251A695435003F51FD /* NTAMatchTableViewController.swift */; };
 		439E48DF1A692D5C00CFB118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E48DE1A692D5C00CFB118 /* AppDelegate.swift */; };
 		439E48E41A692D5C00CFB118 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E48E21A692D5C00CFB118 /* Main.storyboard */; };
 		439E48E61A692D5C00CFB118 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439E48E51A692D5C00CFB118 /* Images.xcassets */; };
 		439E48E91A692D5C00CFB118 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 439E48E71A692D5C00CFB118 /* LaunchScreen.xib */; };
 		439E48F51A692D5C00CFB118 /* TourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E48F41A692D5C00CFB118 /* TourneyTests.swift */; };
-		43C10F771A6F0F8700D53257 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C10F751A6F0F8700D53257 /* Bolts.framework */; };
-		43C10F781A6F0F8700D53257 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C10F761A6F0F8700D53257 /* Parse.framework */; };
 		43C10F7A1A7046C800D53257 /* NTAKnockoutPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */; };
-		43C3A3B41A7FCCE800E26BE0 /* trophy.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C3A3B31A7FCCE800E26BE0 /* trophy.png */; };
 		43E0ADB31A7A595500B07C9A /* NTALoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */; };
+		43E4817E1A87B34700624B59 /* Avenir Next Condensed.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 43E4817D1A87B34700624B59 /* Avenir Next Condensed.ttc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,8 +92,8 @@
 		430B7DA71A7FD0BD001E9258 /* knockout_single_128.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = knockout_single_128.plist; sourceTree = "<group>"; };
 		430B7DA81A7FD0BD001E9258 /* knockout_single_256.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = knockout_single_256.plist; sourceTree = "<group>"; };
 		430B7DA91A7FD0BD001E9258 /* knockout_single_512.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = knockout_single_512.plist; sourceTree = "<group>"; };
+		430D10F31A84ED9A00421FAA /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		431E3BC61A751519003DCC8A /* NTAScoresTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAScoresTableViewController.swift; sourceTree = "<group>"; };
-		431E3BC81A753E0C003DCC8A /* NTAScoresTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAScoresTableViewCell.swift; sourceTree = "<group>"; };
 		4334B1781A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAKnockoutMatchTableViewCell.swift; sourceTree = "<group>"; };
 		4334B17A1A69D1CF0070AB66 /* NTAMatchWinnerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAMatchWinnerTableViewController.swift; sourceTree = "<group>"; };
 		4368E6461A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAKnockoutFormatTableViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +103,7 @@
 		4368E64B1A69303300D67F46 /* NTATypeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTATypeTableViewController.swift; sourceTree = "<group>"; };
 		4368E6521A69304000D67F46 /* NTAEditTournamentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAEditTournamentTableViewController.swift; sourceTree = "<group>"; };
 		4368E6531A69304000D67F46 /* NTATNameTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTATNameTableViewController.swift; sourceTree = "<group>"; };
+		4381EE5E1A8976AB0077D1CB /* NTAAboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAAboutViewController.swift; sourceTree = "<group>"; };
 		439966251A695435003F51FD /* NTAMatchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAMatchTableViewController.swift; sourceTree = "<group>"; };
 		439E48D91A692D5C00CFB118 /* Tourney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tourney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		439E48DD1A692D5C00CFB118 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,11 +114,9 @@
 		439E48EE1A692D5C00CFB118 /* TourneyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TourneyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		439E48F31A692D5C00CFB118 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		439E48F41A692D5C00CFB118 /* TourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourneyTests.swift; sourceTree = "<group>"; };
-		43C10F751A6F0F8700D53257 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "Frameworks/parse-library-1/Bolts.framework"; sourceTree = "<group>"; };
-		43C10F761A6F0F8700D53257 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "Frameworks/parse-library-1/Parse.framework"; sourceTree = "<group>"; };
 		43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAKnockoutPageViewController.swift; sourceTree = "<group>"; };
-		43C3A3B31A7FCCE800E26BE0 /* trophy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trophy.png; sourceTree = "<group>"; };
 		43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTALoginViewController.swift; sourceTree = "<group>"; };
+		43E4817D1A87B34700624B59 /* Avenir Next Condensed.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Avenir Next Condensed.ttc"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430D10F41A84ED9A00421FAA /* libstdc++.6.dylib in Frameworks */,
 				430926BB1A692E780060C037 /* libsqlite3.dylib in Frameworks */,
 				430926B91A692E730060C037 /* libz.dylib in Frameworks */,
 				430926B71A692E6D0060C037 /* SystemConfiguration.framework in Frameworks */,
@@ -134,9 +133,7 @@
 				430926AF1A692E530060C037 /* MobileCoreServices.framework in Frameworks */,
 				430926AD1A692E4E0060C037 /* CoreLocation.framework in Frameworks */,
 				430926AB1A692E490060C037 /* CoreGraphics.framework in Frameworks */,
-				43C10F771A6F0F8700D53257 /* Bolts.framework in Frameworks */,
 				430926A91A692E420060C037 /* CFNetwork.framework in Frameworks */,
-				43C10F781A6F0F8700D53257 /* Parse.framework in Frameworks */,
 				430926A71A692E3C0060C037 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,15 +151,14 @@
 		430926A51A692E100060C037 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				430D10F31A84ED9A00421FAA /* libstdc++.6.dylib */,
 				430926A61A692E3C0060C037 /* AudioToolbox.framework */,
-				43C10F751A6F0F8700D53257 /* Bolts.framework */,
 				430926A81A692E420060C037 /* CFNetwork.framework */,
 				430926AA1A692E490060C037 /* CoreGraphics.framework */,
 				430926AC1A692E4E0060C037 /* CoreLocation.framework */,
 				430926BA1A692E780060C037 /* libsqlite3.dylib */,
 				430926B81A692E730060C037 /* libz.dylib */,
 				430926AE1A692E530060C037 /* MobileCoreServices.framework */,
-				43C10F761A6F0F8700D53257 /* Parse.framework */,
 				430926B01A692E590060C037 /* QuartzCore.framework */,
 				430926B21A692E5E0060C037 /* Security.framework */,
 				430926B61A692E6D0060C037 /* SystemConfiguration.framework */,
@@ -197,13 +193,13 @@
 				439E48E51A692D5C00CFB118 /* Images.xcassets */,
 				439E48E71A692D5C00CFB118 /* LaunchScreen.xib */,
 				439E48E21A692D5C00CFB118 /* Main.storyboard */,
-				43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */,
-				431E3BC81A753E0C003DCC8A /* NTAScoresTableViewCell.swift */,
+				4381EE5E1A8976AB0077D1CB /* NTAAboutViewController.swift */,
 				4368E6521A69304000D67F46 /* NTAEditTournamentTableViewController.swift */,
 				4368E6461A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift */,
 				4334B1781A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift */,
 				43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */,
 				4368E6471A69303300D67F46 /* NTAKnockoutTableViewController.swift */,
+				43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */,
 				439966251A695435003F51FD /* NTAMatchTableViewController.swift */,
 				4334B17A1A69D1CF0070AB66 /* NTAMatchWinnerTableViewController.swift */,
 				4368E6481A69303300D67F46 /* NTAParticipantsTableViewController.swift */,
@@ -219,6 +215,7 @@
 		439E48DC1A692D5C00CFB118 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				43E4817D1A87B34700624B59 /* Avenir Next Condensed.ttc */,
 				430B7D9A1A7FD0BD001E9258 /* knockout_double_4.plist */,
 				430B7D9B1A7FD0BD001E9258 /* knockout_double_8.plist */,
 				430B7D9C1A7FD0BD001E9258 /* knockout_double_16.plist */,
@@ -234,7 +231,6 @@
 				430B7DA71A7FD0BD001E9258 /* knockout_single_128.plist */,
 				430B7DA81A7FD0BD001E9258 /* knockout_single_256.plist */,
 				430B7DA91A7FD0BD001E9258 /* knockout_single_512.plist */,
-				43C3A3B31A7FCCE800E26BE0 /* trophy.png */,
 				439E48DD1A692D5C00CFB118 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -267,6 +263,7 @@
 				439E48D51A692D5C00CFB118 /* Sources */,
 				439E48D61A692D5C00CFB118 /* Frameworks */,
 				439E48D71A692D5C00CFB118 /* Resources */,
+				430D10F51A84EDC900421FAA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -326,6 +323,8 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
+				it,
 			);
 			mainGroup = 439E48D01A692D5C00CFB118;
 			productRefGroup = 439E48DA1A692D5C00CFB118 /* Products */;
@@ -346,13 +345,13 @@
 				430B7DAC1A7FD0BD001E9258 /* knockout_double_16.plist in Resources */,
 				430B7DB21A7FD0BD001E9258 /* knockout_single_8.plist in Resources */,
 				439E48E41A692D5C00CFB118 /* Main.storyboard in Resources */,
-				43C3A3B41A7FCCE800E26BE0 /* trophy.png in Resources */,
 				430B7DB51A7FD0BD001E9258 /* knockout_single_32.plist in Resources */,
 				430B7DB11A7FD0BD001E9258 /* knockout_single_4.plist in Resources */,
 				430B7DAB1A7FD0BD001E9258 /* knockout_double_8.plist in Resources */,
 				430B7DB01A7FD0BD001E9258 /* knockout_double_256.plist in Resources */,
 				430B7DAA1A7FD0BD001E9258 /* knockout_double_4.plist in Resources */,
 				430B7DB81A7FD0BD001E9258 /* knockout_single_256.plist in Resources */,
+				43E4817E1A87B34700624B59 /* Avenir Next Condensed.ttc in Resources */,
 				439E48E91A692D5C00CFB118 /* LaunchScreen.xib in Resources */,
 				430B7DAE1A7FD0BD001E9258 /* knockout_double_64.plist in Resources */,
 				430B7DAD1A7FD0BD001E9258 /* knockout_double_32.plist in Resources */,
@@ -374,6 +373,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		430D10F51A84EDC900421FAA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=/usr/local/bin:$PATH\ncd /Users/jfender/Documents/Workspace/parse\n\nparse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		439E48D51A692D5C00CFB118 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -383,10 +398,10 @@
 				439966261A695435003F51FD /* NTAMatchTableViewController.swift in Sources */,
 				431E3BC71A751519003DCC8A /* NTAScoresTableViewController.swift in Sources */,
 				4368E64E1A69303300D67F46 /* NTAParticipantsTableViewController.swift in Sources */,
+				4381EE5F1A8976AB0077D1CB /* NTAAboutViewController.swift in Sources */,
 				43E0ADB31A7A595500B07C9A /* NTALoginViewController.swift in Sources */,
 				4368E64F1A69303300D67F46 /* NTATournamentListTableViewController.swift in Sources */,
 				4368E6551A69304000D67F46 /* NTATNameTableViewController.swift in Sources */,
-				431E3BC91A753E0C003DCC8A /* NTAScoresTableViewCell.swift in Sources */,
 				4368E6541A69304000D67F46 /* NTAEditTournamentTableViewController.swift in Sources */,
 				4368E64D1A69303300D67F46 /* NTAKnockoutTableViewController.swift in Sources */,
 				4334B1791A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift in Sources */,
@@ -522,6 +537,8 @@
 					"$(inherited)",
 					"/Users/jfender/Downloads/parse-library-1",
 					"$(PROJECT_DIR)/Frameworks/parse-library-1",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Tourney/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -542,6 +559,8 @@
 					"$(inherited)",
 					"/Users/jfender/Downloads/parse-library-1",
 					"$(PROJECT_DIR)/Frameworks/parse-library-1",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Tourney/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

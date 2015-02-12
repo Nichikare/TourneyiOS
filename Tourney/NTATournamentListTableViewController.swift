@@ -13,6 +13,7 @@ class NTATournamentListTableViewController: UITableViewController {
     @IBAction func unwindToList (segue : UIStoryboardSegue) {}
     
     var tournaments = [AnyObject]();
+    var selectedRow: Int = 0
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,7 +32,6 @@ class NTATournamentListTableViewController: UITableViewController {
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if (error == nil) {
-                NSLog("Successfully retrieved \(objects.count) tournaments.")
                 self.tournaments = objects;
                 self.tableView.reloadData()
             } else {
@@ -50,7 +50,14 @@ class NTATournamentListTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel!.text = self.tournaments[indexPath.row]["title"] as NSString
+        cell.textLabel?.text = self.tournaments[indexPath.row]["title"] as NSString
+        if let type = self.tournaments[indexPath.row]["type"] as? NSString {
+            cell.detailTextLabel?.text = type.capitalizedString
+        }
+        else {
+            cell.detailTextLabel?.text = ""
+        }
+        cell.backgroundColor = UIColor.clearColor()
         return cell
     }
     
@@ -60,6 +67,7 @@ class NTATournamentListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         var editRowAction = UITableViewRowAction(style: .Normal, title: "Edit", handler:{action, index in
+            self.selectedRow = indexPath.row
             self.performSegueWithIdentifier("editSegue", sender: indexPath)
         })
         
@@ -82,10 +90,15 @@ class NTATournamentListTableViewController: UITableViewController {
             self.presentViewController(alertController, animated: true, completion: nil)
         })
         
+        editRowAction.backgroundColor = UIColor.appLightColor()
+        deleteRowAction.backgroundColor = UIColor.appRedColor()
+        
         return [deleteRowAction, editRowAction]
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.selectedRow = indexPath.row
+        
         let tournament = self.tournaments[indexPath.row] as PFObject
         if (tournament["type"] == nil || tournament["type"] as NSString == "") {
             self.performSegueWithIdentifier("participantSegue", sender: tournament)

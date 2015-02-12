@@ -8,53 +8,101 @@
 
 import UIKit
 
-class NTAParticipantsTableViewController: UITableViewController {
+class NTAParticipantsTableViewController: UITableViewController, UIGestureRecognizerDelegate {
 
     var tournament = PFObject(className: "Tournament")
     
     @IBAction func unwindToParticipants (segue : UIStoryboardSegue) {}
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var startButton: UIBarButtonItem!
+    @IBOutlet weak var navigationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var shuffleButton: UIBarButtonItem!
+    @IBOutlet weak var participantCountLabel: UILabel!
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if (self.title! != self.tournament["title"] as NSString) {
-            self.title = self.tournament["title"] as NSString
-        }
-        
-        self.updateNameTextFieldEnabledState()
+        let title = self.tournament["title"] as NSString
+        self.navigationButton.setTitle(title, forState: .Normal)
+        self.navigationButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
+        self.navigationButton.sizeToFit()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = self.tournament["title"] as NSString
+        
         self.nameTextField.becomeFirstResponder()
+        self.nameTextField.attributedPlaceholder = NSAttributedString(string:"Enter participant name", attributes:[NSForegroundColorAttributeName: UIColor.appLightColor()])
+        
+        let barButtonItemFont = UIFont(name: "AvenirNext-DemiBold", size: 16)
+        if let font = barButtonItemFont {
+            self.startButton.setTitleTextAttributes([NSFontAttributeName : font], forState: UIControlState.Normal)
+        }
+        
+        self.deleteButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.appRedColor()], forState: UIControlState.Normal)
+        self.participantCountLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
+    }
+    
+    @IBAction func startAction(sender: AnyObject) {
+        if (self.tournament["participants"].count < 3) {
+            let startAlertController = UIAlertController(title: nil, message: "You need at least 3 participants to start a tournament.", preferredStyle: .Alert)
+            
+            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            startAlertController.addAction(OKAction)
+            
+            self.presentViewController(startAlertController, animated: true, completion: nil)
+        }
+        else {
+            self.performSegueWithIdentifier("startSegue", sender: self)
+        }
+    }
+    
+    func editAction(sender: UIBarButtonItem) {
+        self.performSegueWithIdentifier("editSegue", sender: self)
     }
     
     @IBAction func toggleEdit(sender: AnyObject) {
         if (self.tableView.editing) {
             self.tableView.editing = false
-            self.editButton.setTitle("Edit List", forState: .Normal)
-            self.editButton.titleLabel?.font = UIFont.systemFontOfSize(16.0)
+            self.editButton.setTitle("Edit", forState: .Normal)
+            self.nameTextField.enabled = true
+            self.navigationController?.setToolbarHidden(true, animated: true)
         }
         else {
             self.tableView.editing = true
             self.editButton.setTitle("Done", forState: .Normal)
-            self.editButton.titleLabel?.font = UIFont.boldSystemFontOfSize(16.0)
+            self.nameTextField.enabled = false
+            if self.tournament["participants"].count > 1 {
+                self.navigationController?.setToolbarHidden(false, animated: true)
+            }
         }
-        
-        self.updateNameTextFieldEnabledState()
     }
     
-    func updateNameTextFieldEnabledState() {
-        if (self.tableView.editing) {
-            self.nameTextField.enabled = false
-            self.nameTextField.text = ""
+    @IBAction func deleteParticipants(sender: AnyObject) {
+        let deleteAlertController = UIAlertController(title: nil, message: "Are you sure you want to delete all participants?", preferredStyle: .Alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+            self.tournament["participants"] = NSMutableArray()
+            self.toggleEdit(self)
+            self.tableView.reloadData()
+            self.tournament.saveEventually()
         }
-        else {
-            self.nameTextField.enabled = true
-        }
+        deleteAlertController.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        deleteAlertController.addAction(cancelAction)
+        
+        self.presentViewController(deleteAlertController, animated: true, completion: nil)
     }
     
     @IBAction func shuffleParticipants(sender: AnyObject) {
@@ -82,33 +130,8 @@ class NTAParticipantsTableViewController: UITableViewController {
         self.nameTextField.endEditing(true)
     }
     
-    @IBAction func showActionSheet(sender: AnyObject) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        let startAction = UIAlertAction(title: "Start", style: .Default) { (action) in
-            if (self.tournament["participants"].count < 2) {
-                let startAlertController = UIAlertController(title: nil, message: "You need at least 2 participants to start a tournament.", preferredStyle: .Alert)
-                
-                let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                startAlertController.addAction(OKAction)
-                
-                self.presentViewController(startAlertController, animated: true, completion: nil)
-            }
-            else {
-                self.performSegueWithIdentifier("startSegue", sender: self)
-            }
-        }
-        alertController.addAction(startAction)
-        
-        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
-            self.performSegueWithIdentifier("editSegue", sender: self)
-        }
-        alertController.addAction(editAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        return self.nameTextField.isFirstResponder()
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -120,15 +143,30 @@ class NTAParticipantsTableViewController: UITableViewController {
         let name = participant["name"] as NSString
         
         var attributedString = NSMutableAttributedString(string: position + ". " + name)
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSMakeRange(0, positionLength))
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.appLightColor(), range: NSMakeRange(0, positionLength))
         
         cell.textLabel?.attributedText = attributedString
+        cell.backgroundColor = UIColor.clearColor()
         
         return cell
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tournament["participants"].count
+        let participantCount = self.tournament["participants"].count
+        self.participantCountLabel.text = "\(participantCount) participants"
+        
+        if participantCount < 1 {
+            self.editButton.enabled = false
+        }
+        else {
+            self.editButton.enabled = true
+        }
+        
+        if self.tableView.editing && participantCount < 2 {
+            self.navigationController?.setToolbarHidden(true, animated: true)
+        }
+        
+        return participantCount
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -138,6 +176,19 @@ class NTAParticipantsTableViewController: UITableViewController {
             self.tableView.reloadData()
             self.tournament.saveEventually()
         }
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        var deleteRowAction = UITableViewRowAction(style: .Default, title: "Delete", handler:{action, index in
+            self.tournament["participants"].removeObjectAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            self.tableView.reloadData()
+            self.tournament.saveEventually()
+        })
+        
+        deleteRowAction.backgroundColor = UIColor.appRedColor()
+        
+        return [deleteRowAction]
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
@@ -150,14 +201,22 @@ class NTAParticipantsTableViewController: UITableViewController {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         let text = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if (text != "") {
+        
+        if self.tournament["participants"].count == 512 {
+            let maxAlertController = UIAlertController(title: nil, message: "Maximum participants reached.", preferredStyle: .Alert)
+            
+            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            maxAlertController.addAction(OKAction)
+            
+            self.presentViewController(maxAlertController, animated: true, completion: nil)
+        }
+        else if (text != "") {
             let participant = ["name": text]
             self.tournament["participants"].insertObject(participant, atIndex: 0)
             
             let indexPath:NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.reloadData()
-            
             textField.text = ""
             
             self.tournament.saveEventually()

@@ -21,6 +21,7 @@ class NTATNameTableViewController: UITableViewController {
         }
         else {
             self.navigationItem.rightBarButtonItem?.enabled = true
+            self.nameTextField.textColor = UIColor.whiteColor()
         }
     }
     
@@ -46,13 +47,18 @@ class NTATNameTableViewController: UITableViewController {
             self.nameTextField.text = self.tournament["title"] as NSString
         }
         
+        let barButtonItemFont = UIFont(name: "AvenirNext-DemiBold", size: 16)
+        if let font = barButtonItemFont {
+            self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName : font], forState: UIControlState.Normal)
+        }
+        
         var cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: "cancelButtonAction")
         self.navigationItem.leftBarButtonItem = cancelButton
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        nameTextField.becomeFirstResponder()
+        self.nameTextField.becomeFirstResponder()
     }
 
     func doneButtonAction() {
@@ -85,5 +91,11 @@ class NTATNameTableViewController: UITableViewController {
         tournament["title"] = self.nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         tournament.saveEventually()
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as UITableViewHeaderFooterView
+        header.textLabel.textColor = UIColor.appLightColor()
+        header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
 }

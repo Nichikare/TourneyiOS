@@ -60,13 +60,10 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as NTAScoresTableViewCell
-        cell.cellTextField.delegate = self
-        cell.cellTextField.enabled = false
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as UITableViewCell
         
         if (indexPath.section == 0) {
             cell.textLabel?.text = "\(String(self.setCount)) sets"
-            cell.cellTextField.hidden = true
             var setStepper = UIStepper(frame: CGRectZero)
             setStepper.minimumValue = 0
             setStepper.maximumValue = 99
@@ -76,20 +73,30 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
             cell.accessoryView = setStepper
         }
         else {
-            cell.accessoryView = nil
-            cell.cellTextField.hidden = false
+            let cellTextField = UITextField(frame: CGRectZero)
+            cellTextField.delegate = self
+            cellTextField.enabled = false
+            cellTextField.keyboardType = UIKeyboardType.NumberPad
+            cellTextField.keyboardAppearance = UIKeyboardAppearance.Dark
+            cellTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+            
             if let participants = self.match["participants"] as? NSArray {
                 let index = participants[indexPath.row] as NSInteger
                 cell.textLabel?.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: index)
                 
                 if let scores = self.match["scores"] as? [[Int]] {
                     let score = scores[indexPath.section - 1][indexPath.row]
-                    cell.cellTextField.text = String(score)
+                    cellTextField.text = String(score)
                 }
                 else {
-                    cell.cellTextField.text = String(0)
+                    cellTextField.text = String(0)
                 }
             }
+            
+            
+            cellTextField.textAlignment = NSTextAlignment.Right
+            cellTextField.sizeToFit()
+            cell.accessoryView = cellTextField
         }
         
         return cell
@@ -102,11 +109,14 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(textField: UITextField) {
         textField.enabled = false
-        let textFieldCenter = textField.center
-        let pointInTableView = tableView.convertPoint(textFieldCenter, fromView: textField.superview?.superview)
+        let cell = textField.superview as UITableViewCell
 
-        if let indexPath = self.tableView.indexPathForRowAtPoint(pointInTableView) {
+        if let indexPath = self.tableView.indexPathForCell(cell) {
             if var scores = self.match["scores"] as? [[Int]] {
+                if indexPath.section > scores.count {
+                    return
+                }
+                
                 var set = scores[indexPath.section - 1]
                 if let value = textField.text.toInt() {
                     set[indexPath.row] = value
@@ -128,6 +138,10 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
         if textField.text.toInt() == 0 {
            textField.text = ""
         }
+    }
+    
+    func textFieldDidChange(textField: UITextField) {
+        textField.sizeToFit()
     }
     
     func stepperValueChanged(sender: UIStepper!) {
@@ -152,8 +166,23 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as NTAScoresTableViewCell
-        cell.cellTextField.enabled = true
-        cell.cellTextField.becomeFirstResponder()
+        if indexPath.section > 0 {
+            let cell = self.tableView.cellForRowAtIndexPath(indexPath)
+            let cellTextField = cell?.accessoryView as UITextField
+            cellTextField.enabled = true
+            cellTextField.becomeFirstResponder()
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as UITableViewHeaderFooterView
+        header.textLabel.textColor = UIColor.appLightColor()
+        header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as UITableViewHeaderFooterView
+        footer.textLabel.textColor = UIColor.appLightColor()
+        footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
 }

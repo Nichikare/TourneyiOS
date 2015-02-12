@@ -16,10 +16,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // TODO make this async?
+        ParseCrashReporting.enable()
         Parse.enableLocalDatastore()
         Parse.setApplicationId("4zjfhYhbjTMD58b8IXsxjrEsR0xzyUsIIkJkzZ5r", clientKey: "1ZSLFOheFZwo2AjsbGngDGfBClkUOLfJvS6Nxx1b")
-        
+        println(PARSE_VERSION)
         self.initialViewController = self.window?.rootViewController
+        
+        // Set default navigation bar colors.
+        UINavigationBar.appearance().barStyle = UIBarStyle.Black
+        UINavigationBar.appearance().barTintColor = UIColor.appBackgroundColor()
+        UINavigationBar.appearance().tintColor =  UIColor.appBlueColor()
+        UINavigationBar.appearance().translucent = false
+        
+        UIToolbar.appearance().barTintColor = UIColor.appLightBackgroundColor()
+        UIToolbar.appearance().tintColor = UIColor.appBlueColor()
+        
+        // Table colors.
+        UITableView.appearance().backgroundColor = UIColor.appBackgroundColor()
+        UITableView.appearance().separatorColor = UIColor.appSeparatorColor()
+        UITableViewCell.appearance().backgroundColor = UIColor.appLightBackgroundColor()
+        UITableViewCell.appearance().tintColor = UIColor.appLightColor()
+        UITableViewCell.appearance().textLabel?.textColor = UIColor.whiteColor()
+        UITableViewCell.appearance().detailTextLabel?.textColor = UIColor.appLightColor()
+        
+        let colorView = UIView()
+        colorView.backgroundColor = UIColor.appSelectedColor()
+        UITableViewCell.appearance().selectedBackgroundView = colorView
+        
+        // Button colors.
+        UIBarButtonItem.appearance().tintColor = UIColor.appBlueColor()
+        self.window?.tintColor = UIColor.appBlueColor()
+        UIApplication.sharedApplication().keyWindow?.tintColor = UIColor.appBlueColor()
+        UIButton.appearance().tintColor = UIColor.appBlueColor()
+        
+        // Textfield colors.
+        UITextField.appearance().textColor = UIColor.whiteColor()
+        
+        // Fonts
+        let navigationBarFont = UIFont(name: "AvenirNext-Regular", size: 16)
+        if let font = navigationBarFont {
+            UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName : font]
+        }
+        
+        let barButtonItemFont = UIFont(name: "AvenirNext-Regular", size: 16)
+        if let font = barButtonItemFont {
+            UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: font], forState: UIControlState.Normal)
+        }
+        
+        UILabel.appearance().font = UIFont(name: "AvenirNext-Regular", size: 16)
+        UITextField.appearance().font = UIFont(name: "AvenirNext-Regular", size: 16)
         
         return true
     }
@@ -108,6 +153,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+}
 
+// Adds Tourney brand color helper functions.
+extension UIColor {
+    class func appBlueColor() -> UIColor {
+        return UIColor(red: 52.0/255.0, green: 163.0/255.0, blue: 219.0/255.0, alpha: 1.0)
+    }
+    
+    class func appBackgroundColor() -> UIColor {
+        return UIColor(red: 39.0/255.0, green: 39.0/255.0, blue: 48.0/255.0, alpha: 1.0)
+    }
+    
+    class func appLightBackgroundColor() -> UIColor {
+        return UIColor(red: 61.0/255.0, green: 66.0/255.0, blue: 77.0/255.0, alpha: 1.0)
+    }
+    
+    class func appSelectedColor() -> UIColor {
+        return UIColor(red: 77.0/255.0, green: 83.0/255.0, blue: 96.0/255.0, alpha: 1.0)
+    }
+    
+    class func appSeparatorColor() -> UIColor {
+        return UIColor(red: 87.0/255.0, green: 87.0/255.0, blue: 95.0/255.0, alpha: 1.0)
+    }
+    
+    class func appLightColor() -> UIColor {
+        return UIColor(red: 142.0/255.0, green: 144.0/255.0, blue: 151.0/255.0, alpha: 1.0)
+    }
+    
+    class func appGreenColor() -> UIColor {
+        return UIColor(red: 52.0/255.0, green: 219.0/255.0, blue: 66.0/255.0, alpha: 1.0)
+    }
+    
+    class func appRedColor() -> UIColor {
+        return UIColor(red: 219.0/255.0, green: 52.0/255.0, blue: 52.0/255.0, alpha: 1.0)
+    }
 }
 

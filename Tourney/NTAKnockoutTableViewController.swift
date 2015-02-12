@@ -20,14 +20,21 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
     var pageIndex = 0    
     var matches = [[String:Int]]()
     
+    @IBOutlet weak var roundHeaderLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.translucent = false
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        
+        if self.pageViewController?.roundCount == (self.pageIndex + 1) {
+            self.roundHeaderLabel.text = "FINAL"
+        }
+        else {
+            let roundSize = self.matches.count * 2
+            self.roundHeaderLabel.text = "ROUND OF \(roundSize)"
+        }
+        self.roundHeaderLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     // Number of matches in this round.
@@ -51,10 +58,7 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             // If we're on the last round, append some useful terms.
             var append = ""
             if self.pageViewController?.roundCount == (self.pageIndex + 1) {
-                if section == 0 {
-                    append = " (Final)"
-                }
-                else {
+                if section == 1 {
                     append = " (3rd Place)"
                 }
             }
@@ -63,6 +67,14 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
         }
         
         return ""
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 30.0
+        }
+        
+        return 50.0
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -80,6 +92,18 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
         return ""
     }
     
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as UITableViewHeaderFooterView
+        header.textLabel.textColor = UIColor.appLightColor()
+        header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as UITableViewHeaderFooterView
+        footer.textLabel.textColor = UIColor.appLightColor()
+        footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as NTAKnockoutMatchTableViewCell
         cell.delegate = self
@@ -89,6 +113,14 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
         cell.winnerBButton.hidden = true
         cell.scoreALabel.hidden = true
         cell.scoreBLabel.hidden = true
+        cell.wonAImage.hidden = true
+        cell.wonBImage.hidden = true
+        
+        // Default colors
+        cell.nameALabel.textColor = UIColor.whiteColor()
+        cell.nameBLabel.textColor = UIColor.whiteColor()
+        cell.scoreALabel.textColor = UIColor.whiteColor()
+        cell.scoreBLabel.textColor = UIColor.whiteColor()
 
         if let mid = self.matches[indexPath.section]["mid"] {
             // Save data to the cell.
@@ -108,42 +140,38 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
                 // TODO What if both -1? Can this happen?
                 if indexA == -2 {
                     cell.nameALabel.text = "BYE"
-                    cell.nameALabel.textColor = UIColor.grayColor()
+                    cell.nameALabel.textColor = UIColor.appLightColor()
                 }
                 else if indexA == -1 {
                     cell.nameALabel.text = self.awaitingParticipantMessage(mid, weight: 0)
-                    cell.nameALabel.textColor = UIColor.grayColor()
+                    cell.nameALabel.textColor = UIColor.appLightColor()
                 }
                 else {
                     cell.nameALabel.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexA)
-                    cell.nameALabel.font = UIFont.systemFontOfSize(16.0)
-                    cell.nameALabel.textColor = UIColor.blackColor()
                     participantASet = true
                 }
                 
                 if indexB == -2 {
                     cell.nameBLabel.text = "BYE"
-                    cell.nameBLabel.textColor = UIColor.grayColor()
+                    cell.nameBLabel.textColor = UIColor.appLightColor()
                 }
                 else if indexB == -1 {
                     cell.nameBLabel.text = self.awaitingParticipantMessage(mid, weight: 1)
-                    cell.nameBLabel.textColor = UIColor.grayColor()
+                    cell.nameBLabel.textColor = UIColor.appLightColor()
                 }
                 else {
                     cell.nameBLabel.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexB)
-                    cell.nameBLabel.font = UIFont.systemFontOfSize(16.0)
-                    cell.nameBLabel.textColor = UIColor.blackColor()
                     participantBSet = true
                 }
                 
                 if let winner = match["winner"] as? Int {
                     if winner == indexA {
-                        cell.nameALabel.font = UIFont.boldSystemFontOfSize(16.0)
-                        cell.nameALabel.textColor = UIColor.greenColor()
+                        cell.nameALabel.textColor = UIColor.appGreenColor()
+                        cell.scoreALabel.textColor = UIColor.appGreenColor()
                     }
                     else if winner == indexB {
-                        cell.nameBLabel.font = UIFont.boldSystemFontOfSize(16.0)
-                        cell.nameBLabel.textColor = UIColor.greenColor()
+                        cell.nameBLabel.textColor = UIColor.appGreenColor()
+                        cell.scoreBLabel.textColor = UIColor.appGreenColor()
                     }
 
                     if let scores = match["scores"] as? [[Int]] {
@@ -166,7 +194,14 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
                             cell.scoreBLabel.hidden = false
                         }
                     }
-                    // TODO show check icon
+                    else {
+                        if winner == indexA {
+                            cell.wonAImage.hidden = false
+                        }
+                        else if winner == indexB {
+                            cell.wonBImage.hidden = false
+                        }
+                    }
                 }
                 else if participantASet && participantBSet {
                     cell.winnerAButton.hidden = false
@@ -176,8 +211,8 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             else {
                 cell.nameALabel.text = self.awaitingParticipantMessage(mid, weight: 0)
                 cell.nameBLabel.text = self.awaitingParticipantMessage(mid, weight: 1)
-                cell.nameALabel.textColor = UIColor.grayColor()
-                cell.nameBLabel.textColor = UIColor.grayColor()
+                cell.nameALabel.textColor = UIColor.appLightColor()
+                cell.nameBLabel.textColor = UIColor.appLightColor()
             }
         }
 

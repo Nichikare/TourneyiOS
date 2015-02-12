@@ -14,39 +14,31 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     var tournament = PFObject(className: "Tournament")
     var map = [[String:Int]]()
     var roundCount: Int = 0
-    
-    @IBAction func showActionSheet(sender: AnyObject) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
-            self.performSegueWithIdentifier("editSegue", sender: self)
-        }
-        alertController.addAction(editAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
-    }
 
+    @IBOutlet weak var navigationButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.dataSource = self
         self.map = self.appDelegate.getKnockoutMap(self.tournament)
         let size = self.appDelegate.getKnockoutMapSize(self.tournament)
-        self.roundCount = Int(log(size)) + 1
+        self.roundCount = Int(log2(size))
         
         let tableViewController = self.viewControllerAtIndex(0)
         let viewControllers: NSArray = [tableViewController]
         self.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         
-        self.view.backgroundColor = UIColor.blueColor()
+        self.view.backgroundColor = UIColor.appBackgroundColor()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.title = self.tournament["title"] as NSString
+        
+        let title = self.tournament["title"] as NSString
+        self.navigationButton.setTitle(title, forState: .Normal)
+        self.navigationButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
+        self.navigationButton.sizeToFit()
     }
     
     func viewControllerAtIndex(var index: Int) -> UIViewController! {

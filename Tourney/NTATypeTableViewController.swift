@@ -30,6 +30,10 @@ class NTATypeTableViewController: UITableViewController {
         self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .Checkmark
     }
     
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // TODO: Uncomment these when we release groups
 //        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .None
@@ -42,5 +46,17 @@ class NTATypeTableViewController: UITableViewController {
             let viewController = segue.destinationViewController as NTAKnockoutFormatTableViewController
             viewController.tournament = self.tournament
         }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as UITableViewHeaderFooterView
+        header.textLabel.textColor = UIColor.appLightColor()
+        header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as UITableViewHeaderFooterView
+        footer.textLabel.textColor = UIColor.appLightColor()
+        footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
 }

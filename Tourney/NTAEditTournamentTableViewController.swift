@@ -24,6 +24,12 @@ class NTAEditTournamentTableViewController: UITableViewController {
         
         self.nameLabel.text = self.tournament["title"] as NSString
     }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as UITableViewHeaderFooterView
+        footer.textLabel.textColor = UIColor.appLightColor()
+        footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
 
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if (section == 1 && self.tournament["type"] as? NSString != "knockout") {
@@ -70,7 +76,13 @@ class NTAEditTournamentTableViewController: UITableViewController {
             }
             else {
                 let destroyAction = UIAlertAction(title: "Delete Tournament", style: .Destructive) { (action) in
-                    println(action)
+                    self.tournament.deleteEventually()
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    let navigationController = self.appDelegate.initialViewController as UINavigationController
+                    navigationController.popToRootViewControllerAnimated(false)
+                    let viewController = navigationController.topViewController as NTATournamentListTableViewController
+                    viewController.tournaments.removeAtIndex(viewController.selectedRow)
+                    viewController.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: viewController.selectedRow, inSection: 0)], withRowAnimation: .Automatic)
                 }
                 alertController.addAction(destroyAction)
             }

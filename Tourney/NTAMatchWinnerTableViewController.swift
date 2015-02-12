@@ -35,10 +35,22 @@ class NTAMatchWinnerTableViewController: UITableViewController {
                 else if winner == indexB {
                     self.cellB.accessoryType = .Checkmark
                 }
-                
+            }
+            
+            if self.delegate?.getValue("winner") as NSObject != NSNull() {
                 self.cellA.textLabel?.enabled = false
                 self.cellB.textLabel?.enabled = false
             }
+        }
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 1 && self.delegate?.getValue("winner") as NSObject == NSNull() {
+            // Only show the Reset button when a winner is saved.
+            return 0
+        }
+        else {
+            return super.tableView(self.tableView, numberOfRowsInSection:section)
         }
     }
     
@@ -59,7 +71,7 @@ class NTAMatchWinnerTableViewController: UITableViewController {
                 }
             }
         }
-        else if indexPath.section == 1 && indexPath.row == 0 {
+        else if indexPath.section == 1 && indexPath.row == 0 {  
             var showAlert = false
             
             // Check that both the winnerMid and loserMid have no winner set
@@ -82,10 +94,22 @@ class NTAMatchWinnerTableViewController: UITableViewController {
                 let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
                 resetAlertController.addAction(OKAction)
                 self.presentViewController(resetAlertController, animated: true, completion: nil)
+                self.tableView.deselectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), animated: true)
             }
             else {
-                // Reset match winners.
-                self.delegate?.resetWinner()
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+
+                alertController.message = "Are you sure? The match winner and score will be reset."
+                
+                let destroyAction = UIAlertAction(title: "Reset", style: .Destructive) { (action) in
+                    // Reset match winners.
+                    self.delegate?.resetWinner()
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
+                alertController.addAction(destroyAction)
+
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }

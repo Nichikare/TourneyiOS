@@ -30,6 +30,8 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         var extraMatchSwitch = UISwitch(frame: CGRectZero) as UISwitch
         // TODO this may be run multiple times so check previous set value if any?
         extraMatchSwitch.on = false
+        extraMatchSwitch.onTintColor = UIColor.appBlueColor()
+        extraMatchSwitch.tintColor = UIColor.appLightColor()
         extraMatchCell.accessoryView = extraMatchSwitch
     }
     
@@ -88,6 +90,7 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
             }
         }
         
+        
         // Save match records.
         self.tournament.setObject(matches, forKey: "matches")
         
@@ -114,9 +117,16 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         self.tableView.cellForRowAtIndexPath(selectedPlacementRow)?.accessoryType = .Checkmark
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            return ""
+        }
+        
+        return super.tableView(tableView, titleForFooterInSection: section)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -136,4 +146,18 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as UITableViewHeaderFooterView
+        header.textLabel.textColor = UIColor.appLightColor()
+        header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as UITableViewHeaderFooterView
+        footer.textLabel.textColor = UIColor.appLightColor()
+        footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
+    }
+    
+    
 }
