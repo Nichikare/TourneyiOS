@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseCrashReporting.enable()
         Parse.enableLocalDatastore()
         Parse.setApplicationId("4zjfhYhbjTMD58b8IXsxjrEsR0xzyUsIIkJkzZ5r", clientKey: "1ZSLFOheFZwo2AjsbGngDGfBClkUOLfJvS6Nxx1b")
-        println(PARSE_VERSION)
         self.initialViewController = self.window?.rootViewController
         
         // Set default navigation bar colors.
