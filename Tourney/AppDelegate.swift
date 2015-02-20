@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var initialViewController: UIViewController?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // TODO make this async?
         ParseCrashReporting.enable()
         Parse.enableLocalDatastore()
         Parse.setApplicationId("4zjfhYhbjTMD58b8IXsxjrEsR0xzyUsIIkJkzZ5r", clientKey: "1ZSLFOheFZwo2AjsbGngDGfBClkUOLfJvS6Nxx1b")

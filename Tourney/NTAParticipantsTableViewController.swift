@@ -18,7 +18,6 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     @IBOutlet weak var navigationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var shuffleButton: UIBarButtonItem!
-    @IBOutlet weak var participantCountLabel: UILabel!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
     override func viewWillAppear(animated: Bool) {
@@ -28,10 +27,6 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
         self.navigationButton.setTitle(title, forState: .Normal)
         self.navigationButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
         self.navigationButton.sizeToFit()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -50,7 +45,6 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
         }
         
         self.deleteButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.appRedColor()], forState: UIControlState.Normal)
-        self.participantCountLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
     }
     
     @IBAction func startAction(sender: AnyObject) {
@@ -153,7 +147,6 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let participantCount = self.tournament["participants"].count
-        self.participantCountLabel.text = "\(participantCount) participants"
         
         if participantCount < 1 {
             self.editButton.enabled = false
@@ -219,6 +212,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
             self.tableView.reloadData()
             textField.text = ""
             
+            // TODO: Contact Parse about lag caused by calling this many times. Because offline?
             self.tournament.saveEventually()
         }
         return false

@@ -171,6 +171,9 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
             let cellTextField = cell?.accessoryView as UITextField
             cellTextField.enabled = true
             cellTextField.becomeFirstResponder()
+            self.tableView.scrollToNearestSelectedRowAtScrollPosition(UITableViewScrollPosition.Middle, animated: true)
+            
+            // TODO: Allow minus
         }
     }
     

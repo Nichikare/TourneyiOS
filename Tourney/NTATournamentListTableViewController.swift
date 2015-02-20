@@ -15,6 +15,17 @@ class NTATournamentListTableViewController: UITableViewController {
     var tournaments = [AnyObject]();
     var selectedRow: Int = 0
     
+    @IBAction func refreshTable(sender: UIRefreshControl) {
+        // Attempt to load tournaments from Parse. If successful, overwrite any existing data.
+        self.loadTournaments(false, {(tournaments) in
+            self.tournaments = tournaments;
+            self.tableView.reloadData()
+            sender.endRefreshing()
+        }, {() in
+            sender.endRefreshing()
+        })
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -25,17 +36,35 @@ class NTATournamentListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Load any tournaments that have been pinned to the LDS.
+        self.loadTournaments(true, {(tournaments) in
+            self.tournaments = tournaments;
+            self.tableView.reloadData()
+        }, {})
+        
+        // Attempt to load tournaments from Parse. If successful, overwrite any existing data.
+        self.loadTournaments(false, {(tournaments) in
+            self.tournaments = tournaments;
+            self.tableView.reloadData()
+        }, {})
+    }
+    
+    func loadTournaments(fromLocalDatastore: Bool, success: (tournaments: [AnyObject]!) -> Void, fail: () -> Void) {
         var query = PFQuery(className:"Tournament")
         query.orderByAscending("createdAt")
         query.whereKey("createdBy", equalTo: PFUser.currentUser())
-        // TODO: Work offline too. query.fromLocalDatastore() if no connection?
+        
+        if fromLocalDatastore {
+            query.fromLocalDatastore()
+        }
+        
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if (error == nil) {
-                self.tournaments = objects;
-                self.tableView.reloadData()
+                success(tournaments: objects)
             } else {
                 NSLog("Error: %@ %@", error, error.userInfo!)
+                fail()
             }
         }
     }

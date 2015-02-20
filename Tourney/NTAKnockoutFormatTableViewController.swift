@@ -28,7 +28,6 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = button
         
         var extraMatchSwitch = UISwitch(frame: CGRectZero) as UISwitch
-        // TODO this may be run multiple times so check previous set value if any?
         extraMatchSwitch.on = false
         extraMatchSwitch.onTintColor = UIColor.appBlueColor()
         extraMatchSwitch.tintColor = UIColor.appLightColor()
