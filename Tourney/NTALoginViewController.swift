@@ -15,34 +15,33 @@ class NTALoginViewController: UIViewController {
     @IBOutlet weak var label: UILabel!
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()        
 
-//        if PFUser.currentUser() == nil {
-//            PFUser.enableAutomaticUser()
-//            PFUser.currentUser().saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError!) -> Void in
-//                if succeeded {
-//                    self.goToNavigationController()
-//                } else {
-//                    self.label.text = "Error occurred. Internet access is required for the first run of Tourney. Please close the app and try again."
-//                }
-//            })
-//        }
-//        else {
-//            self.goToNavigationController()
-//        }
-        
         if PFUser.currentUser() == nil {
             PFUser.enableAutomaticUser()
+            PFUser.currentUser().saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError!) -> Void in
+                if succeeded {
+                    self.goToNavigationController()
+                } else {
+                    self.label.text = "Error occurred. Internet access is required for the first run of Tourney. Please close the app and try again."
+                }
+            })
         }
-
-        PFUser.currentUser().saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError!) -> Void in
-            if succeeded {
-                // TODO succeeds even if not connected.
-                self.goToNavigationController()
-            } else {
-                self.label.text = "You are not connected to the internet. Please check your network connection and try again."
-            }
-        })
+        else {
+            self.goToNavigationController()
+        }
+        
+//        if PFUser.currentUser() == nil {
+//            PFUser.enableAutomaticUser()
+//        }
+//
+//        PFUser.currentUser().saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError!) -> Void in
+//            if succeeded {
+//                self.goToNavigationController()
+//            } else {
+//                self.label.text = "You are not connected to the internet. Please check your network connection and try again."
+//            }
+//        })
     }
     
     func goToNavigationController() {
