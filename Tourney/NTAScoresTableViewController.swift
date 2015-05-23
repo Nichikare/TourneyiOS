@@ -10,7 +10,7 @@ import UIKit
 
 class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var tournament = PFObject(className: "Tournament")
     var match = [String:AnyObject]()
     var delegate: NTAMatchTableViewControllerDelegate?
@@ -60,7 +60,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as! UITableViewCell
         
         if (indexPath.section == 0) {
             cell.textLabel?.text = "\(String(self.setCount)) sets"
@@ -81,7 +81,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
             cellTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
             if let participants = self.match["participants"] as? NSArray {
-                let index = participants[indexPath.row] as NSInteger
+                let index = participants[indexPath.row] as! NSInteger
                 cell.textLabel?.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: index)
                 
                 if let scores = self.match["scores"] as? [[Int]] {
@@ -109,7 +109,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(textField: UITextField) {
         textField.enabled = false
-        let cell = textField.superview as UITableViewCell
+        let cell = textField.superview as! UITableViewCell
 
         if let indexPath = self.tableView.indexPathForCell(cell) {
             if var scores = self.match["scores"] as? [[Int]] {
@@ -130,7 +130,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
                 self.match["scores"] = scores
             }
             
-            self.delegate?.updateValue("scores", toValue: self.match["scores"] as [[Int]])
+            self.delegate?.updateValue("scores", toValue: self.match["scores"] as! [[Int]])
         }
     }
     
@@ -155,7 +155,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
             }
             
             self.match["scores"] = scores
-            self.delegate?.updateValue("scores", toValue: self.match["scores"] as [[Int]])
+            self.delegate?.updateValue("scores", toValue: self.match["scores"] as! [[Int]])
         }
         self.setCount = newSetCount
         self.tableView.reloadData()
@@ -168,7 +168,7 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section > 0 {
             let cell = self.tableView.cellForRowAtIndexPath(indexPath)
-            let cellTextField = cell?.accessoryView as UITextField
+            let cellTextField = cell?.accessoryView as! UITextField
             cellTextField.enabled = true
             cellTextField.becomeFirstResponder()
             self.tableView.scrollToNearestSelectedRowAtScrollPosition(UITableViewScrollPosition.Middle, animated: true)
@@ -178,13 +178,13 @@ class NTAScoresTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as UITableViewHeaderFooterView
+        let header = view as! UITableViewHeaderFooterView
         header.textLabel.textColor = UIColor.appLightColor()
         header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as UITableViewHeaderFooterView
+        let footer = view as! UITableViewHeaderFooterView
         footer.textLabel.textColor = UIColor.appLightColor()
         footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }

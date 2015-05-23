@@ -17,11 +17,11 @@ class NTATournamentListTableViewController: UITableViewController {
     
     @IBAction func refreshTable(sender: UIRefreshControl) {
         // Attempt to load tournaments from Parse. If successful, overwrite any existing data.
-        self.loadTournaments(false, {(tournaments) in
+        self.loadTournaments(false, success: {(tournaments) in
             self.tournaments = tournaments;
             self.tableView.reloadData()
             sender.endRefreshing()
-        }, {() in
+        }, fail: {() in
             sender.endRefreshing()
         })
     }
@@ -37,33 +37,33 @@ class NTATournamentListTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Load any tournaments that have been pinned to the LDS.
-        self.loadTournaments(true, {(tournaments) in
+        self.loadTournaments(true, success: {(tournaments) in
             self.tournaments = tournaments;
             self.tableView.reloadData()
-        }, {})
+        }, fail: {})
         
         // Attempt to load tournaments from Parse. If successful, overwrite any existing data.
-        self.loadTournaments(false, {(tournaments) in
+        self.loadTournaments(false, success: {(tournaments) in
             self.tournaments = tournaments;
             self.tableView.reloadData()
-        }, {})
+        }, fail: {})
     }
     
     func loadTournaments(fromLocalDatastore: Bool, success: (tournaments: [AnyObject]!) -> Void, fail: () -> Void) {
         var query = PFQuery(className:"Tournament")
         query.orderByAscending("createdAt")
-        query.whereKey("createdBy", equalTo: PFUser.currentUser())
+        query.whereKey("createdBy", equalTo: PFUser.currentUser()!)
         
         if fromLocalDatastore {
             query.fromLocalDatastore()
         }
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects, error) -> Void in
             if (error == nil) {
                 success(tournaments: objects)
             } else {
-                NSLog("Error: %@ %@", error, error.userInfo!)
+                NSLog("Error: %@ %@", error!, error!.userInfo!)
                 fail()
             }
         }
@@ -78,8 +78,8 @@ class NTATournamentListTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel?.text = self.tournaments[indexPath.row]["title"] as NSString
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as! UITableViewCell
+        cell.textLabel?.text = self.tournaments[indexPath.row]["title"] as? String
         if let type = self.tournaments[indexPath.row]["type"] as? NSString {
             cell.detailTextLabel?.text = type.capitalizedString
         }
@@ -104,7 +104,7 @@ class NTATournamentListTableViewController: UITableViewController {
             
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             let destroyAction = UIAlertAction(title: "Delete Tournament", style: .Destructive) { (action) in
-                let tournament = self.tournaments[index.row] as PFObject
+                let tournament = self.tournaments[index.row] as! PFObject
                 tournament.deleteEventually()
                 self.tournaments.removeAtIndex(index.row)
                 self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: .Automatic)
@@ -128,8 +128,8 @@ class NTATournamentListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.selectedRow = indexPath.row
         
-        let tournament = self.tournaments[indexPath.row] as PFObject
-        if (tournament["type"] == nil || tournament["type"] as NSString == "") {
+        let tournament = self.tournaments[indexPath.row] as! PFObject
+        if (tournament["type"] == nil || tournament["type"] as! String == "") {
             self.performSegueWithIdentifier("participantSegue", sender: tournament)
         }
         else {
@@ -139,23 +139,23 @@ class NTATournamentListTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "newSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTATNameTableViewController
+            let navigationController = segue.destinationViewController as! UINavigationController
+            var tableViewController = navigationController.topViewController as! NTATNameTableViewController
             tableViewController.createNewTournament = true
         }
         else if (segue.identifier == "participantSegue") {
-            let viewController = segue.destinationViewController as NTAParticipantsTableViewController
-            viewController.tournament = sender as PFObject
+            let viewController = segue.destinationViewController as! NTAParticipantsTableViewController
+            viewController.tournament = sender as! PFObject
         }
         else if (segue.identifier == "tournamentSegue") {
-            var pageViewController = segue.destinationViewController as NTAKnockoutPageViewController
-            pageViewController.tournament = sender as PFObject
+            var pageViewController = segue.destinationViewController as! NTAKnockoutPageViewController
+            pageViewController.tournament = sender as! PFObject
         }
         else if (segue.identifier == "editSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTAEditTournamentTableViewController
-            let indexPath = sender as NSIndexPath
-            tableViewController.tournament = self.tournaments[indexPath.row] as PFObject
+            let navigationController = segue.destinationViewController as! UINavigationController
+            var tableViewController = navigationController.topViewController as! NTAEditTournamentTableViewController
+            let indexPath = sender as! NSIndexPath
+            tableViewController.tournament = self.tournaments[indexPath.row] as! PFObject
         }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class NTAEditTournamentTableViewController: UITableViewController {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var tournament = PFObject(className: "Tournament")
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -22,11 +22,11 @@ class NTAEditTournamentTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.nameLabel.text = self.tournament["title"] as NSString
+        self.nameLabel.text = self.tournament["title"] as? String
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as UITableViewHeaderFooterView
+        let footer = view as! UITableViewHeaderFooterView
         footer.textLabel.textColor = UIColor.appLightColor()
         footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
@@ -67,9 +67,9 @@ class NTAEditTournamentTableViewController: UITableViewController {
                     self.tournament.saveEventually()
                     
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                    let navigationController = self.appDelegate.initialViewController as UINavigationController
+                    let navigationController = self.appDelegate.initialViewController as! UINavigationController
                     navigationController.popToRootViewControllerAnimated(false)
-                    let viewController = navigationController.topViewController as NTATournamentListTableViewController
+                    let viewController = navigationController.topViewController as! NTATournamentListTableViewController
                     viewController.performSegueWithIdentifier("participantSegue", sender: self.tournament)
                 }
                 alertController.addAction(destroyAction)
@@ -78,9 +78,9 @@ class NTAEditTournamentTableViewController: UITableViewController {
                 let destroyAction = UIAlertAction(title: "Delete Tournament", style: .Destructive) { (action) in
                     self.tournament.deleteEventually()
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                    let navigationController = self.appDelegate.initialViewController as UINavigationController
+                    let navigationController = self.appDelegate.initialViewController as! UINavigationController
                     navigationController.popToRootViewControllerAnimated(false)
-                    let viewController = navigationController.topViewController as NTATournamentListTableViewController
+                    let viewController = navigationController.topViewController as! NTATournamentListTableViewController
                     viewController.tournaments.removeAtIndex(viewController.selectedRow)
                     viewController.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: viewController.selectedRow, inSection: 0)], withRowAnimation: .Automatic)
                 }
@@ -94,11 +94,11 @@ class NTAEditTournamentTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "nameSegue") {
-            let tableViewController = segue.destinationViewController as NTATNameTableViewController
+            let tableViewController = segue.destinationViewController as! NTATNameTableViewController
             tableViewController.tournament = self.tournament
         }
         else if (segue.identifier == "unwindToParticipants") {
-            let tableViewController = segue.destinationViewController as NTAParticipantsTableViewController
+            let tableViewController = segue.destinationViewController as! NTAParticipantsTableViewController
             tableViewController.tournament = self.tournament
         }
     }

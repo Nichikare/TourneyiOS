@@ -14,7 +14,7 @@ protocol NTAKnockoutTableViewControllerDelegate {
 
 class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableViewControllerDelegate {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var pageViewController: NTAKnockoutPageViewController?
     var tournament = PFObject(className: "Tournament")
     var pageIndex = 0    
@@ -41,7 +41,7 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Hide the bronzeMatch if its disabled for the last round.
         if self.pageViewController?.roundCount == (self.pageIndex + 1) {
-            if self.tournament["bronzeMatch"] as Bool == false {
+            if self.tournament["bronzeMatch"] as! Bool == false {
                 return self.matches.count - 1
             }
         }
@@ -93,19 +93,19 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as UITableViewHeaderFooterView
+        let header = view as! UITableViewHeaderFooterView
         header.textLabel.textColor = UIColor.appLightColor()
         header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as UITableViewHeaderFooterView
+        let footer = view as! UITableViewHeaderFooterView
         footer.textLabel.textColor = UIColor.appLightColor()
         footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as NTAKnockoutMatchTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as! NTAKnockoutMatchTableViewCell
         cell.delegate = self
         
         // Ensure elements are hidden by default.
@@ -130,8 +130,8 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
             let match = self.appDelegate.getTournamentMatch(self.tournament, mid: mid)
             
             if let participants = match["participants"] as? NSArray {
-                let indexA = participants[0] as Int
-                let indexB = participants[1] as Int
+                let indexA = participants[0] as! Int
+                let indexB = participants[1] as! Int
                 
                 // Booleans to determine if a participant is set.
                 var participantASet = false
@@ -259,16 +259,16 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "matchSegue") {
-            let tableViewController = segue.destinationViewController as NTAMatchTableViewController
+            let tableViewController = segue.destinationViewController as! NTAMatchTableViewController
             tableViewController.tournament = self.tournament
             tableViewController.mid = sender!.mid as Int
             tableViewController.knockoutTableViewController = self
         }
         else if (segue.identifier == "matchWinnerSegue") {
-            let tableViewController = segue.destinationViewController as NTAMatchTableViewController
+            let tableViewController = segue.destinationViewController as! NTAMatchTableViewController
             tableViewController.tournament = self.tournament
-            tableViewController.mid = sender!["mid"] as Int
-            tableViewController.match = sender!["match"] as [String:AnyObject]
+            tableViewController.mid = sender!["mid"] as! Int
+            tableViewController.match = sender!["match"] as! [String:AnyObject]
             tableViewController.winnerChanged = true
             tableViewController.saveBarButton.enabled = true
             tableViewController.knockoutTableViewController = self            
@@ -278,7 +278,7 @@ class NTAKnockoutTableViewController: UITableViewController, NTAKnockoutTableVie
     func setWinner(mid: Int, index: Int) {
         var match = self.appDelegate.getTournamentMatch(self.tournament, mid: mid)
         if let participants = match["participants"] as? NSArray {
-            let participantIndex = participants[index] as NSInteger
+            let participantIndex = participants[index] as! NSInteger
             match["winner"] = participantIndex
             self.performSegueWithIdentifier("matchWinnerSegue", sender: ["mid": mid, "match": match])
         }

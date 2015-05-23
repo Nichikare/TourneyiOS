@@ -13,7 +13,7 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
     @IBOutlet weak var extraMatchCell: UITableViewCell!
     @IBOutlet weak var sizeCell: UITableViewCell!
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var tournament = PFObject(className: "Tournament")
     
     var selectedFormatRow = NSIndexPath(forRow: 0, inSection: 0)
@@ -43,7 +43,7 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
             self.tournament["format"] = "double"
         }
         
-        let extraMatchSwitch = self.extraMatchCell.accessoryView as UISwitch
+        let extraMatchSwitch = self.extraMatchCell.accessoryView as! UISwitch
         self.tournament["bronzeMatch"] = extraMatchSwitch.on
         
         // Store byes to advance.
@@ -61,14 +61,14 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
                 let indexA = matchInfo["indexA"]! as Int
                 let indexB = matchInfo["indexB"]! as Int
                 
-                if self.tournament["participants"].count > indexA {
+                if self.tournament["participants"]!.count > indexA {
                     participants[0] = indexA
                 }
                 else {
                     participants[0] = -2
                 }
                 
-                if self.tournament["participants"].count > indexB {
+                if self.tournament["participants"]!.count > indexB {
                     participants[1] = indexB
                 }
                 else {
@@ -102,9 +102,9 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
         self.tournament.saveEventually()
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        let navigationController = self.appDelegate.initialViewController as UINavigationController
+        let navigationController = self.appDelegate.initialViewController as! UINavigationController
         navigationController.popToRootViewControllerAnimated(false)
-        let viewController = navigationController.topViewController as NTATournamentListTableViewController
+        let viewController = navigationController.topViewController as! NTATournamentListTableViewController
         viewController.performSegueWithIdentifier("tournamentSegue", sender: self.tournament)
     }
     
@@ -147,13 +147,13 @@ class NTAKnockoutFormatTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as UITableViewHeaderFooterView
+        let header = view as! UITableViewHeaderFooterView
         header.textLabel.textColor = UIColor.appLightColor()
         header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as UITableViewHeaderFooterView
+        let footer = view as! UITableViewHeaderFooterView
         footer.textLabel.textColor = UIColor.appLightColor()
         footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }

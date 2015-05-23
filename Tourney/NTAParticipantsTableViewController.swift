@@ -23,7 +23,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let title = self.tournament["title"] as NSString
+        let title = self.tournament["title"] as! String
         self.navigationButton.setTitle(title, forState: .Normal)
         self.navigationButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
         self.navigationButton.sizeToFit()
@@ -48,7 +48,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     }
     
     @IBAction func startAction(sender: AnyObject) {
-        if (self.tournament["participants"].count < 3) {
+        if (self.tournament["participants"]!.count < 3) {
             let startAlertController = UIAlertController(title: nil, message: "You need at least 3 participants to start a tournament.", preferredStyle: .Alert)
             
             let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -76,7 +76,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
             self.tableView.editing = true
             self.editButton.setTitle("Done", forState: .Normal)
             self.nameTextField.enabled = false
-            if self.tournament["participants"].count > 1 {
+            if self.tournament["participants"]!.count > 1 {
                 self.navigationController?.setToolbarHidden(false, animated: true)
             }
         }
@@ -103,11 +103,11 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
         let shuffleAlertController = UIAlertController(title: nil, message: "Are you sure you want to shuffle participants?", preferredStyle: .Alert)
         
         let shuffleAction = UIAlertAction(title: "Shuffle", style: .Default) { (action) in
-            let count = self.tournament["participants"].count
+            let count = self.tournament["participants"]!.count
             for var index = count - 1; index > 0; index-- {
                 // Random int from 0 to index-1
                 var randomIndex = Int(arc4random_uniform(UInt32(index-1)))
-                self.tournament["participants"].exchangeObjectAtIndex(index, withObjectAtIndex: randomIndex)
+                self.tournament["participants"]!.exchangeObjectAtIndex(index, withObjectAtIndex: randomIndex)
             }
             self.tableView.reloadData()
             self.tournament.saveEventually()
@@ -129,12 +129,12 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableCell", forIndexPath: indexPath) as! UITableViewCell
         
         let position = String(indexPath.row + 1)
-        let positionLength = countElements(position) + 1
-        let participant = self.tournament["participants"].objectAtIndex(indexPath.row) as NSDictionary
-        let name = participant["name"] as NSString
+        let positionLength = count(position) + 1
+        let participant = self.tournament["participants"]!.objectAtIndex(indexPath.row) as! NSDictionary
+        let name = participant["name"] as! String
         
         var attributedString = NSMutableAttributedString(string: position + ". " + name)
         attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.appLightColor(), range: NSMakeRange(0, positionLength))
@@ -146,7 +146,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let participantCount = self.tournament["participants"].count
+        let participantCount = self.tournament["participants"]!.count
         
         if participantCount < 1 {
             self.editButton.enabled = false
@@ -164,7 +164,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == .Delete) {
-            self.tournament["participants"].removeObjectAtIndex(indexPath.row)
+            self.tournament["participants"]!.removeObjectAtIndex(indexPath.row)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.reloadData()
             self.tournament.saveEventually()
@@ -173,7 +173,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         var deleteRowAction = UITableViewRowAction(style: .Default, title: "Delete", handler:{action, index in
-            self.tournament["participants"].removeObjectAtIndex(indexPath.row)
+            self.tournament["participants"]!.removeObjectAtIndex(indexPath.row)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.reloadData()
             self.tournament.saveEventually()
@@ -185,9 +185,9 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let participant = self.tournament["participants"].objectAtIndex(sourceIndexPath.row) as [String:AnyObject]
-        self.tournament["participants"].removeObjectAtIndex(sourceIndexPath.row)
-        self.tournament["participants"].insertObject(participant, atIndex: destinationIndexPath.row)
+        let participant = self.tournament["participants"]!.objectAtIndex(sourceIndexPath.row) as! [String:AnyObject]
+        self.tournament["participants"]!.removeObjectAtIndex(sourceIndexPath.row)
+        self.tournament["participants"]!.insertObject(participant, atIndex: destinationIndexPath.row)
         self.tableView.reloadData()
         self.tournament.saveEventually()
     }
@@ -195,7 +195,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         let text = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         
-        if self.tournament["participants"].count == 512 {
+        if self.tournament["participants"]!.count == 512 {
             let maxAlertController = UIAlertController(title: nil, message: "Maximum participants reached.", preferredStyle: .Alert)
             
             let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -205,7 +205,7 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
         }
         else if (text != "") {
             let participant = ["name": text]
-            self.tournament["participants"].insertObject(participant, atIndex: 0)
+            self.tournament["participants"]!.insertObject(participant, atIndex: 0)
             
             let indexPath:NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
@@ -220,13 +220,13 @@ class NTAParticipantsTableViewController: UITableViewController, UIGestureRecogn
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "editSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTAEditTournamentTableViewController
+            let navigationController = segue.destinationViewController as! UINavigationController
+            var tableViewController = navigationController.topViewController as! NTAEditTournamentTableViewController
             tableViewController.tournament = self.tournament
         }
         else if (segue.identifier == "startSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTATypeTableViewController
+            let navigationController = segue.destinationViewController as! UINavigationController
+            var tableViewController = navigationController.topViewController as! NTATypeTableViewController
             tableViewController.tournament = self.tournament
         }
     }

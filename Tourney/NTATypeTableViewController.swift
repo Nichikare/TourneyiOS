@@ -43,19 +43,19 @@ class NTATypeTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "knockoutSegue") {
-            let viewController = segue.destinationViewController as NTAKnockoutFormatTableViewController
+            let viewController = segue.destinationViewController as! NTAKnockoutFormatTableViewController
             viewController.tournament = self.tournament
         }
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as UITableViewHeaderFooterView
+        let header = view as! UITableViewHeaderFooterView
         header.textLabel.textColor = UIColor.appLightColor()
         header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as UITableViewHeaderFooterView
+        let footer = view as! UITableViewHeaderFooterView
         footer.textLabel.textColor = UIColor.appLightColor()
         footer.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }

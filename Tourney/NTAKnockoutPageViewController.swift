@@ -10,7 +10,7 @@ import UIKit
 
 class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var tournament = PFObject(className: "Tournament")
     var map = [[String:Int]]()
     var roundCount: Int = 0
@@ -27,7 +27,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
         
         let tableViewController = self.viewControllerAtIndex(0)
         let viewControllers: NSArray = [tableViewController]
-        self.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+        self.setViewControllers(viewControllers as [AnyObject], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         
         self.view.backgroundColor = UIColor.appBackgroundColor()
     }
@@ -35,7 +35,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let title = self.tournament["title"] as NSString
+        let title = self.tournament["title"] as! String
         self.navigationButton.setTitle(title, forState: .Normal)
         self.navigationButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
         self.navigationButton.sizeToFit()
@@ -46,7 +46,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
             return nil
         }
         
-        let tableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("KnockoutTableViewController") as NTAKnockoutTableViewController
+        let tableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("KnockoutTableViewController") as! NTAKnockoutTableViewController
         
         tableViewController.pageViewController = self
         tableViewController.tournament = self.tournament
@@ -59,7 +59,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        let tableViewController = viewController as NTAKnockoutTableViewController
+        let tableViewController = viewController as! NTAKnockoutTableViewController
         var index = tableViewController.pageIndex
         if index == 0 {
             return nil
@@ -70,7 +70,7 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        let tableViewController = viewController as NTAKnockoutTableViewController
+        let tableViewController = viewController as! NTAKnockoutTableViewController
         let index = tableViewController.pageIndex + 1
         if index == self.roundCount {
             return nil
@@ -88,8 +88,8 @@ class NTAKnockoutPageViewController: UIPageViewController, UIPageViewControllerD
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "editSegue") {
-            let navigationController = segue.destinationViewController as UINavigationController
-            var tableViewController = navigationController.topViewController as NTAEditTournamentTableViewController
+            let navigationController = segue.destinationViewController as! UINavigationController
+            var tableViewController = navigationController.topViewController as! NTAEditTournamentTableViewController
             tableViewController.tournament = self.tournament
         }
     }

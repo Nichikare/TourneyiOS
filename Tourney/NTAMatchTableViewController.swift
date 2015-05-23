@@ -16,7 +16,7 @@ protocol NTAMatchTableViewControllerDelegate {
 
 class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewControllerDelegate, UITextViewDelegate {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var knockoutTableViewController: NTAKnockoutTableViewController?
     var tournament = PFObject(className: "Tournament")
     var mid = 0
@@ -48,7 +48,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         
         // Set initial date
         if (self.match["date"] != nil) {
-            self.updateDateCellDetailText(self.match["date"] as NSDate)
+            self.updateDateCellDetailText(self.match["date"] as! NSDate)
         }
         
         // Remove notes text view padding.
@@ -57,7 +57,7 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         self.notesTextView.delegate = self
         
         if let notes = self.match["notes"] as? NSString {
-            self.notesTextView.text = notes
+            self.notesTextView.text = notes as String
             if (self.notesTextView.text == "") {
                 self.notesTextView.text = "Notes"
                 self.notesTextView.textColor = UIColor.appLightColor()
@@ -136,9 +136,9 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
         
         // Advance participants if the winner has been changed.
         if winnerChanged == true {
-            if self.tournament["type"] as NSString == "knockout" {
-                let participants = self.match["participants"] as [Int]
-                let winnerIndex = self.match["winner"] as Int
+            if self.tournament["type"] as! NSString == "knockout" {
+                let participants = self.match["participants"] as! [Int]
+                let winnerIndex = self.match["winner"] as! Int
                 let loserIndex = winnerIndex == participants[0] ? participants[1] : participants[0]
                 
                 let matchInfo = self.appDelegate.getKnockoutMap(self.tournament).filter({$0["mid"] == self.mid})[0] as [String:Int]
@@ -282,14 +282,14 @@ class NTAMatchTableViewController: UITableViewController, NTAMatchTableViewContr
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "winnerSegue") {
-            let tableViewController = segue.destinationViewController as NTAMatchWinnerTableViewController
+            let tableViewController = segue.destinationViewController as! NTAMatchWinnerTableViewController
             tableViewController.tournament = self.tournament
             tableViewController.match = self.match
             tableViewController.mid = self.mid
             tableViewController.delegate = self
         }
         else if (segue.identifier == "scoresSegue") {
-            let tableViewController = segue.destinationViewController as NTAScoresTableViewController
+            let tableViewController = segue.destinationViewController as! NTAScoresTableViewController
             tableViewController.tournament = self.tournament
             tableViewController.match = self.match
             tableViewController.delegate = self

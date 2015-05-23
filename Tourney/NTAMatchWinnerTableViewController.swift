@@ -13,7 +13,7 @@ class NTAMatchWinnerTableViewController: UITableViewController {
     @IBOutlet weak var cellA: UITableViewCell!
     @IBOutlet weak var cellB: UITableViewCell!
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var tournament = PFObject(className: "Tournament")
     var match = [String:AnyObject]()
     var mid: Int = 0
@@ -23,8 +23,8 @@ class NTAMatchWinnerTableViewController: UITableViewController {
         super.viewDidLoad()
         
         if let participants = self.match["participants"] as? NSArray {
-            let indexA = participants[0] as NSInteger
-            let indexB = participants[1] as NSInteger
+            let indexA = participants[0] as! NSInteger
+            let indexB = participants[1] as! NSInteger
             self.cellA.textLabel?.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexA)
             self.cellB.textLabel?.text = self.appDelegate.getParticipantNameFromIndex(self.tournament, index: indexB)
 
@@ -37,7 +37,7 @@ class NTAMatchWinnerTableViewController: UITableViewController {
                 }
             }
             
-            if self.delegate?.getValue("winner") as NSObject != NSNull() {
+            if self.delegate?.getValue("winner") as! NSObject != NSNull() {
                 self.cellA.textLabel?.enabled = false
                 self.cellB.textLabel?.enabled = false
             }
@@ -45,7 +45,7 @@ class NTAMatchWinnerTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 && self.delegate?.getValue("winner") as NSObject == NSNull() {
+        if section == 1 && self.delegate?.getValue("winner") as! NSObject == NSNull() {
             // Only show the Reset button when a winner is saved.
             return 0
         }
@@ -56,15 +56,15 @@ class NTAMatchWinnerTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
-            if self.delegate?.getValue("winner") as NSObject == NSNull() {
+            if self.delegate?.getValue("winner") as! NSObject == NSNull() {
                 if let participants = self.match["participants"] as? NSArray {
                     if indexPath.row == 0 {
-                        self.delegate?.updateValue("winner", toValue: participants[0] as Int)
+                        self.delegate?.updateValue("winner", toValue: participants[0] as! Int)
                         self.cellA.accessoryType = .Checkmark
                         self.cellB.accessoryType = .None
                     }
                     else {
-                        self.delegate?.updateValue("winner", toValue: participants[1] as Int)
+                        self.delegate?.updateValue("winner", toValue: participants[1] as! Int)
                         self.cellA.accessoryType = .None
                         self.cellB.accessoryType = .Checkmark
                     }

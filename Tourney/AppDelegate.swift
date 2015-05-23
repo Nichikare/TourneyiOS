@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getKnockoutMapSize(tournament: PFObject) -> Double {
-        let participantCount = tournament["participants"].count as Int
+        let participantCount = tournament["participants"]!.count as Int
         let logParticipantCount = log(Double(participantCount))
         let logMultiple = log(Double(2))
         let size = pow(2, ceil(logParticipantCount/logMultiple))
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if nextMatch.isEmpty {
             nextMatch["participants"] = [-1, -1]
         }
-        var participants = nextMatch["participants"] as [Int]
+        var participants = nextMatch["participants"] as! [Int]
         participants[nextWeight] = participantIndex
         nextMatch["participants"] = participants
         self.updateTournamentMatch(tournament, mid: nextMid, match: nextMatch)
@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Returns a match from the tournament object. If not found, returns an empty dictionary.
     func getTournamentMatch(tournament: PFObject, mid: Int) -> [String:AnyObject] {
-        if let match = tournament["matches"].objectForKey(String(mid)) as? [String:AnyObject] {
+        if let match = tournament["matches"]!.objectForKey(String(mid)) as? [String:AnyObject] {
             return match
         }
         
@@ -114,16 +114,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Replace a match element in the tournament object
     func updateTournamentMatch(tournament: PFObject, mid: Int, match: [String:AnyObject]) {
-        var matches = tournament["matches"] as [String:[String:AnyObject]]
+        var matches = tournament["matches"] as! [String:[String:AnyObject]]
         matches.updateValue(match, forKey: String(mid))
         tournament.setObject(matches, forKey: "matches")
     }
     
     // Returns a participants name as a string given their seed index.
     func getParticipantNameFromIndex(tournament: PFObject, index: Int) -> String {
-        if tournament["participants"].count > index {
-            let participant = tournament["participants"].objectAtIndex(index) as NSDictionary
-            return participant["name"] as NSString
+        if tournament["participants"]!.count > index {
+            let participant = tournament["participants"]!.objectAtIndex(index) as! NSDictionary
+            return participant["name"] as! String
         }
         
         return ""

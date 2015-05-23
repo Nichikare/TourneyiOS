@@ -10,7 +10,7 @@ import UIKit
 
 class NTALoginViewController: UIViewController {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
     @IBOutlet weak var label: UILabel!
     
@@ -19,7 +19,7 @@ class NTALoginViewController: UIViewController {
 
         if PFUser.currentUser() == nil {
             PFUser.enableAutomaticUser()
-            PFUser.currentUser().saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError!) -> Void in
+            PFUser.currentUser()?.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                 if succeeded {
                     self.goToNavigationController()
                 } else {

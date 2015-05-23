@@ -10,7 +10,7 @@ import UIKit
 
 class NTATNameTableViewController: UITableViewController {
     
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -44,7 +44,7 @@ class NTATNameTableViewController: UITableViewController {
             self.title = "Name"
             var rightButton = UIBarButtonItem(title: "Save", style: .Done, target: self, action: "saveButtonAction")
             self.navigationItem.rightBarButtonItem = rightButton
-            self.nameTextField.text = self.tournament["title"] as NSString
+            self.nameTextField.text = self.tournament["title"] as! NSString as String
         }
         
         let barButtonItemFont = UIFont(name: "AvenirNext-DemiBold", size: 16)
@@ -63,7 +63,7 @@ class NTATNameTableViewController: UITableViewController {
 
     func doneButtonAction() {
         var tournament = PFObject(className:"Tournament")
-        var acl = PFACL(user: PFUser.currentUser())
+        var acl = PFACL(user: PFUser.currentUser()!)
         acl.setPublicReadAccess(true)
         tournament.ACL = acl
         tournament["createdBy"] = PFUser.currentUser()
@@ -72,8 +72,8 @@ class NTATNameTableViewController: UITableViewController {
         tournament.saveEventually()
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        let navigationController = self.appDelegate.initialViewController as UINavigationController
-        let viewController = navigationController.topViewController as NTATournamentListTableViewController
+        let navigationController = self.appDelegate.initialViewController as! UINavigationController
+        let viewController = navigationController.topViewController as! NTATournamentListTableViewController
         viewController.tournaments.insert(tournament, atIndex: 0)
         viewController.performSegueWithIdentifier("participantSegue", sender: tournament)
     }
@@ -94,7 +94,7 @@ class NTATNameTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as UITableViewHeaderFooterView
+        let header = view as! UITableViewHeaderFooterView
         header.textLabel.textColor = UIColor.appLightColor()
         header.textLabel.font = UIFont(name: "AvenirNext-Regular", size: 13)
     }
