@@ -17,6 +17,9 @@ class NTATypeTableViewController: UITableViewController {
         if (self.selectedRow.row == 0) {
             self.performSegueWithIdentifier("knockoutSegue", sender: self)
         }
+        else if (self.selectedRow.row == 1) {
+            self.performSegueWithIdentifier("groupsSegue", sender: self)
+        }
     }
 
     override func viewDidLoad() {
@@ -31,19 +34,22 @@ class NTATypeTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // TODO: Uncomment these when we release groups
-//        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .None
-//        self.selectedRow = indexPath
-//        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .Checkmark
+        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .None
+        self.selectedRow = indexPath
+        self.tableView.cellForRowAtIndexPath(self.selectedRow)?.accessoryType = .Checkmark
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "knockoutSegue") {
             let viewController = segue.destinationViewController as! NTAKnockoutFormatTableViewController
+            viewController.tournament = self.tournament
+        }
+        else if (segue.identifier == "groupsSegue") {
+            let viewController = segue.destinationViewController as! NTAGroupsSettingsTableViewController
             viewController.tournament = self.tournament
         }
     }

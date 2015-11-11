@@ -51,7 +51,7 @@ class NTATournamentListTableViewController: UITableViewController {
     
     func loadTournaments(fromLocalDatastore: Bool, success: (tournaments: [AnyObject]!) -> Void, fail: () -> Void) {
         var query = PFQuery(className:"Tournament")
-        query.orderByAscending("createdAt")
+        query.orderByDescending("createdAt")
         query.whereKey("createdBy", equalTo: PFUser.currentUser()!)
         
         if fromLocalDatastore {

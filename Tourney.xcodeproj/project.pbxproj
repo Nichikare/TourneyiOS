@@ -55,8 +55,10 @@
 		439E48E91A692D5C00CFB118 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 439E48E71A692D5C00CFB118 /* LaunchScreen.xib */; };
 		439E48F51A692D5C00CFB118 /* TourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E48F41A692D5C00CFB118 /* TourneyTests.swift */; };
 		43C10F7A1A7046C800D53257 /* NTAKnockoutPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */; };
+		43CB25971B3471F6008A72D1 /* NTAGroupsSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB25961B3471F6008A72D1 /* NTAGroupsSettingsTableViewController.swift */; };
 		43E0ADB31A7A595500B07C9A /* NTALoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */; };
 		43E4817E1A87B34700624B59 /* Avenir Next Condensed.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 43E4817D1A87B34700624B59 /* Avenir Next Condensed.ttc */; };
+		43EBF1E41B8F6411004A954C /* NTAGroupPlacementsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBF1E31B8F6411004A954C /* NTAGroupPlacementsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,8 +125,10 @@
 		439E48F31A692D5C00CFB118 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		439E48F41A692D5C00CFB118 /* TourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourneyTests.swift; sourceTree = "<group>"; };
 		43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAKnockoutPageViewController.swift; sourceTree = "<group>"; };
+		43CB25961B3471F6008A72D1 /* NTAGroupsSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTAGroupsSettingsTableViewController.swift; sourceTree = "<group>"; };
 		43E0ADB21A7A595500B07C9A /* NTALoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTALoginViewController.swift; sourceTree = "<group>"; };
 		43E4817D1A87B34700624B59 /* Avenir Next Condensed.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Avenir Next Condensed.ttc"; sourceTree = "<group>"; };
+		43EBF1E31B8F6411004A954C /* NTAGroupPlacementsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTAGroupPlacementsTableViewController.swift; path = ../NTAGroupPlacementsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +215,8 @@
 				439E48E21A692D5C00CFB118 /* Main.storyboard */,
 				4381EE5E1A8976AB0077D1CB /* NTAAboutViewController.swift */,
 				4368E6521A69304000D67F46 /* NTAEditTournamentTableViewController.swift */,
+				43CB25961B3471F6008A72D1 /* NTAGroupsSettingsTableViewController.swift */,
+				43EBF1E31B8F6411004A954C /* NTAGroupPlacementsTableViewController.swift */,
 				4368E6461A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift */,
 				4334B1781A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift */,
 				43C10F791A7046C800D53257 /* NTAKnockoutPageViewController.swift */,
@@ -314,6 +320,7 @@
 		439E48D11A692D5C00CFB118 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Nichikare Corporation";
 				TargetAttributes = {
@@ -410,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43CB25971B3471F6008A72D1 /* NTAGroupsSettingsTableViewController.swift in Sources */,
 				43C10F7A1A7046C800D53257 /* NTAKnockoutPageViewController.swift in Sources */,
 				439966261A695435003F51FD /* NTAMatchTableViewController.swift in Sources */,
 				431E3BC71A751519003DCC8A /* NTAScoresTableViewController.swift in Sources */,
@@ -423,6 +431,7 @@
 				4334B1791A69C5610070AB66 /* NTAKnockoutMatchTableViewCell.swift in Sources */,
 				4368E64C1A69303300D67F46 /* NTAKnockoutFormatTableViewController.swift in Sources */,
 				4368E6511A69303300D67F46 /* NTATypeTableViewController.swift in Sources */,
+				43EBF1E41B8F6411004A954C /* NTAGroupPlacementsTableViewController.swift in Sources */,
 				439E48DF1A692D5C00CFB118 /* AppDelegate.swift in Sources */,
 				4334B17B1A69D1CF0070AB66 /* NTAMatchWinnerTableViewController.swift in Sources */,
 			);
